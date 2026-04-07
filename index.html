@@ -1,0 +1,2097 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA, Claude & Arquitetura de Agentes | Guia Completo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --green: #00ff88;
+            --green-dark: #00cc6a;
+            --black: #0a0a0a;
+            --gray-dark: #1a1a1a;
+            --gray: #2a2a2a;
+            --gray-light: #3a3a3a;
+            --white: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--black);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--black) 0%, var(--gray-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero .highlight {
+            color: var(--green);
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .hero-meta {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .hero-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 1rem;
+            gap: 0.5rem;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--green);
+            background: var(--gray);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        section {
+            margin-bottom: 6rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--green);
+        }
+
+        h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        section:nth-child(even) {
+            background: var(--gray-dark);
+            padding: 4rem 2rem;
+            margin-left: calc(-50vw + 50%);
+            margin-right: calc(-50vw + 50%);
+            padding-left: calc(50vw - 50%);
+            padding-right: calc(50vw - 50%);
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: var(--gray);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            border: 1px solid var(--gray-light);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--green), var(--green-dark));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--green);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h4 {
+            color: var(--green);
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+        }
+
+        .feature-card {
+            background: var(--gray);
+            border-radius: var(--border-radius);
+            padding: 2.5rem;
+            border: 1px solid var(--gray-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+        }
+
+        pre {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            border: 1px solid var(--gray-light);
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #e6edf3;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--green);
+            color: var(--black);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-copy {
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            background: var(--gray-light);
+            color: var(--text-primary);
+        }
+
+        .btn-copy:hover {
+            background: var(--green);
+            color: var(--black);
+        }
+
+        .btn-copy.copied {
+            background: var(--green);
+            color: var(--black);
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 2rem 0;
+            border-radius: 12px;
+            border: 1px solid var(--gray-light);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--gray);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        th {
+            background: var(--gray-dark);
+            color: var(--green);
+            font-weight: 600;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: var(--gray-light);
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        li strong {
+            color: var(--text-primary);
+        }
+
+        .callout {
+            background: var(--gray);
+            border-left: 4px solid var(--green);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+
+        .callout p {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .skill-block {
+            background: var(--gray);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border: 2px solid var(--green);
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .skill-title {
+            color: var(--green);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .skill-content {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .skill-content code {
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        footer {
+            background: var(--gray-dark);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--gray);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-brand {
+            color: var(--green);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .text-green {
+            color: var(--green);
+        }
+
+        .mb-2 {
+            margin-bottom: 2rem;
+        }
+
+        .mt-2 {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="hero-content">
+            <h1>IA, Claude & <span class="highlight">Arquitetura de Agentes</span></h1>
+            <p>O mapa completo pra você parar de pedir pro ChatGPT "fazer um post" e começar a construir sistemas de verdade.</p>
+            <div class="hero-meta">
+                <span>📍 Por Vinicius | New Bird</span>
+                <span>🎯 FGV Rio | 22 anos</span>
+                <span>🚀 Empreendedor | Fundador</span>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li><a href="#manifesto">Manifesto</a></li>
+            <li><a href="#niveis">5 Níveis</a></li>
+            <li><a href="#ferramentas">Ferramentas</a></li>
+            <li><a href="#claude">Claude vs ChatGPT</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#skills-completas">10 Skills</a></li>
+            <li><a href="#mcp">MCP</a></li>
+            <li><a href="#automacao">Automação</a></li>
+            <li><a href="#prompts">Prompts</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+        <section id="manifesto">
+            <h2>🔥 Manifesto: Por Que Este Documento Existe</h2>
+            
+            <div class="callout">
+                <p><strong>Conhecimento técnico hoje é commodity. Você paga, você tem. O diferencial real é inquietude + disposição para resolver + entender a lógica profunda de como as coisas funcionam.</strong></p>
+            </div>
+
+            <p>Eu sou Vinicius. Tenho 22 anos, estudo administração na FGV Rio, fundei a <strong class="text-green">New Bird</strong> (agência de tráfego pago e produção de vídeo para dentistas/saúde), tenho equity na Pocket Safe (tag Bluetooth) e na Carajillo RTD (bebida alcoólica em lata).</p>
+
+            <p>Comecei do zero. Aprendi por experiência, não por diploma. E descobri algo importante:</p>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🧠 A mentalidade certa vale mais que o curso certo</h4>
+                    <p>Não aceito "é assim porque é". Tudo pode ser resolvido com a ferramenta certa + arquitetura correta.</p>
+                </div>
+                <div class="card">
+                    <h4>⚙️ Penso em sistemas, não em tarefas</h4>
+                    <p>LBO-style logic, estruturas de holding, mecanismos. Tudo é arquitetura.</p>
+                </div>
+                <div class="card">
+                    <h4>🚀 Transito entre técnico e acessível</h4>
+                    <p>Do Claude.ai básico até Claude Code, MCP, APIs. A ferramenta se adapta ao problema.</p>
+                </div>
+            </div>
+
+            <h3 class="mt-2">A Verdade Sobre IA Hoje</h3>
+            <p>A maioria das pessoas usa IA como um <strong>Google mais esperto</strong>. Perguntam, recebem resposta, copiam, colam. Esse não é o jogo.</p>
+            
+            <p>O jogo real é:</p>
+            <ul>
+                <li><strong>Arquitetura de Agentes:</strong> IA como operário, não como consultor.</li>
+                <li><strong>Context Window de 200K tokens:</strong> Processar 50 artigos de uma vez, não perder informação no meio.</li>
+                <li><strong>Skills customizadas:</strong> Instruções permanentes que fazem a IA falar a sua língua.</li>
+                <li><strong>MCP (Model Context Protocol):</strong> Conectar IA com Gmail, Drive, Notion, banco de dados.</li>
+                <li><strong>Automação 24/7:</strong> n8n, Console API, produção em massa sem você tocar.</li>
+            </ul>
+
+            <div class="callout mt-2">
+                <p><strong>Este documento não é um curso. É um mapa. Um manifesto prático. Se você quer fórmula mágica, está no lugar errado. Se quer entender a lógica e construir, continua lendo.</strong></p>
+            </div>
+        </section>
+
+        <section id="niveis">
+            <h2>📊 Os 5 Níveis de Uso de IA</h2>
+            <p>A maioria está no nível 1. Os que dominam o jogo estão no 4-5.</p>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <span class="feature-icon">1️⃣</span>
+                    <div>
+                        <h4>Nível 1: Substituir Google</h4>
+                        <p class="text-green">Perguntas simples, respostas genéricas, copy-paste.</p>
+                    </div>
+                </div>
+                <p><strong>Exemplo:</strong> "Me dá 10 ideias de post pra dentista"</p>
+                <p><strong>Problema:</strong> Genérico. Todo mundo faz igual. Você é commodity.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <span class="feature-icon">2️⃣</span>
+                    <div>
+                        <h4>Nível 2: Prompts Estruturados</h4>
+                        <p class="text-green">Contexto + Tarefa + Formato + Restrições.</p>
+                    </div>
+                </div>
+                <p><strong>Exemplo:</strong> "Você é especialista em marketing odontológico. Crie 10 headlines para anúncio de clareamento dental. Público: mulheres 25-40 anos, classe B, Rio de Janeiro. Tom: aspiracional, não técnico. Formato: 1 linha, máx 60 caracteres."</p>
+                <p><strong>Resultado:</strong> Output direcionado, útil, aplicável.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <span class="feature-icon">3️⃣</span>
+                    <div>
+                        <h4>Nível 3: Skills & Projects (Claude)</h4>
+                        <p class="text-green">IA aprende seu estilo, seu negócio, seu processo.</p>
+                    </div>
+                </div>
+                <p><strong>Exemplo:</strong> Criar uma Skill "Copywriter New Bird" que conhece portfólio, voz da marca, objeções comuns, estrutura de copy. Toda vez que você pede copy, já sai no padrão.</p>
+                <p><strong>Resultado:</strong> Consistência. Velocidade. IA como extensão sua.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <span class="feature-icon">4️⃣</span>
+                    <div>
+                        <h4>Nível 4: MCP + Automação Visual (n8n, Rube)</h4>
+                        <p class="text-green">IA conectada a sistemas externos, fluxos automatizados.</p>
+                    </div>
+                </div>
+                <p><strong>Exemplo:</strong> Workflow que lê emails do Gmail, extrai leads, classifica por intenção, responde automático, adiciona no CRM, gera relatório semanal.</p>
+                <p><strong>Resultado:</strong> IA operacional, não apenas consultiva.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-card-header">
+                    <span class="feature-icon">5️⃣</span>
+                    <div>
+                        <h4>Nível 5: Arquitetura de Agentes (Console API)</h4>
+                        <p class="text-green">Múltiplas IAs especializadas trabalhando juntas 24/7.</p>
+                    </div>
+                </div>
+                <p><strong>Exemplo:</strong> Agente 1 pesquisa tendências, Agente 2 analisa concorrentes, Agente 3 gera ideias, Agente 4 escreve copy, Agente 5 cria arte, Agente 6 agenda posts. Sistema roda sozinho, você só valida.</p>
+                <p><strong>Resultado:</strong> Produção em escala industrial. Você vira arquiteto, não operário.</p>
+            </div>
+
+            <div class="callout mt-2">
+                <p><strong>Este documento te leva do nível 2 ao 5. Se você ainda tá no 1, lê de novo o Manifesto.</strong></p>
+            </div>
+        </section>
+
+        <section id="ferramentas">
+            <h2>🛠️ Ferramentas do Ecossistema</h2>
+            <p>A stack completa que eu uso na New Bird e nos meus projetos.</p>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ferramenta</th>
+                            <th>Função</th>
+                            <th>Preço</th>
+                            <th>Quando Usar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Claude.ai</strong></td>
+                            <td>Chat IA, Skills, Projects, Code Execution</td>
+                            <td>$20/mês (Pro)</td>
+                            <td>Dia a dia, criar docs, brainstorm, análise</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Claude Code</strong></td>
+                            <td>IDE com IA integrada, edita arquivos locais</td>
+                            <td>Incluído no Pro</td>
+                            <td>Projetos grandes, múltiplos arquivos</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Console (Anthropic)</strong></td>
+                            <td>API Claude, workbench, agentes customizados</td>
+                            <td>Pay-as-you-go (~$0.003/1K tokens)</td>
+                            <td>Produção em escala, automação 24/7</td>
+                        </tr>
+                        <tr>
+                            <td><strong>NotebookLM</strong></td>
+                            <td>Oráculo: IA treinada em seus docs/PDFs/vídeos</td>
+                            <td>Grátis</td>
+                            <td>Análise documental, pesquisa profunda</td>
+                        </tr>
+                        <tr>
+                            <td><strong>n8n.io</strong></td>
+                            <td>Automação visual (Zapier open-source)</td>
+                            <td>Self-hosted grátis / $20/mês cloud</td>
+                            <td>Workflows complexos, integrações</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rube.app</strong></td>
+                            <td>Automação drag-and-drop, MCP integrado</td>
+                            <td>Planos variados</td>
+                            <td>Automação rápida sem código</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Perplexity.ai</strong></td>
+                            <td>Pesquisa IA com fontes</td>
+                            <td>Grátis / Pro $20/mês</td>
+                            <td>Research, validação de dados</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ElevenLabs</strong></td>
+                            <td>Speech-to-text, text-to-speech</td>
+                            <td>Planos variados</td>
+                            <td>Transcrição, voice-over</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="mt-2">Links Úteis</h3>
+            <ul>
+                <li><a href="https://claude.ai" target="_blank" class="text-green">claude.ai</a></li>
+                <li><a href="https://console.anthropic.com" target="_blank" class="text-green">console.anthropic.com</a></li>
+                <li><a href="https://notebooklm.google.com" target="_blank" class="text-green">notebooklm.google.com</a></li>
+                <li><a href="https://n8n.io" target="_blank" class="text-green">n8n.io</a></li>
+                <li><a href="https://rube.app" target="_blank" class="text-green">rube.app</a></li>
+            </ul>
+        </section>
+
+        <section id="claude">
+            <h2>⚔️ Claude vs ChatGPT: A Verdade Sem Marketing</h2>
+            
+            <div class="callout">
+                <p><strong>Spoiler: Não é "um é melhor que o outro". São ferramentas complementares. Quem domina os dois domina o jogo.</strong></p>
+            </div>
+
+            <div class="table-wrapper mt-2">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Critério</th>
+                            <th>Claude (Sonnet 4.5)</th>
+                            <th>ChatGPT (GPT-4.5)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Context Window</strong></td>
+                            <td>✅ 200.000 tokens (~500 páginas)</td>
+                            <td>❌ 128.000 tokens</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Análise Documental</strong></td>
+                            <td>✅ Superior (50 PDFs sem perder fio)</td>
+                            <td>⚠️ Bom, mas trava em volumes grandes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Raciocínio Complexo</strong></td>
+                            <td>✅ Extended Thinking (até 10x mais profundo)</td>
+                            <td>✅ Deep Thinking (bom, mas limitado)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Skills Customizadas</strong></td>
+                            <td>✅ Nativo (Custom Styles, Projects)</td>
+                            <td>⚠️ GPTs (bons, mas não integrados)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Code Execution</strong></td>
+                            <td>✅ Cria PPTX, XLSX, DOCX, PDF do chat</td>
+                            <td>⚠️ Cria arquivos, mas execução limitada</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Criatividade</strong></td>
+                            <td>⚠️ Bom, mas mais "comportado"</td>
+                            <td>✅ Excelente, gera ideias mais ousadas</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MCP</strong></td>
+                            <td>✅ Nativo, conecta com tudo</td>
+                            <td>❌ Não tem equivalente</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="mt-2">Quando Usar Cada Um</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🟢 Use Claude quando:</h4>
+                    <ul>
+                        <li>Análise de documentos grandes</li>
+                        <li>Projetos com múltiplos arquivos</li>
+                        <li>Precisa de contexto longo</li>
+                        <li>Criar arquivos executáveis (PPTX, XLSX)</li>
+                        <li>Raciocínio profundo (Extended Thinking)</li>
+                        <li>Automação com MCP</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🔵 Use ChatGPT quando:</h4>
+                    <ul>
+                        <li>Brainstorm criativo</li>
+                        <li>Respostas rápidas</li>
+                        <li>Plugins específicos</li>
+                        <li>GPTs customizados para tarefas pontuais</li>
+                        <li>Explorar ideias ousadas</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout mt-2">
+                <p><strong>Minha stack: Claude pra produção, ChatGPT pra ideação. Os dois juntos = imparável.</strong></p>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>🎯 Skills: A Arma Secreta do Claude</h2>
+            
+            <p><strong>Skill = Instruções permanentes que fazem o Claude falar sua língua, conhecer seu negócio e seguir seus processos.</strong></p>
+
+            <p>Pensa assim: toda vez que você conversa com o ChatGPT, começa do zero. Você tem que explicar quem você é, o que você faz, como você quer que ele responda.</p>
+
+            <p>Com <strong class="text-green">Skills do Claude</strong>, você configura uma vez e toda conversa já começa com aquele contexto carregado.</p>
+
+            <h3 class="mt-2">Anatomia de uma Skill</h3>
+            <div class="feature-card">
+                <h4>1. Nome Claro</h4>
+                <p>Exemplo: "Copywriter New Bird", "Analista de Concorrentes", "Gerador de SOP"</p>
+            </div>
+            <div class="feature-card">
+                <h4>2. Description (Gatilho de Ativação)</h4>
+                <p>Quando o Claude deve ativar essa skill. Seja específico.</p>
+                <p><strong>Exemplo:</strong> "Ative quando o usuário pedir para criar copy de anúncio, headline, legenda ou texto de vendas."</p>
+            </div>
+            <div class="feature-card">
+                <h4>3. Instructions (O Cérebro)</h4>
+                <p>Contexto + Processo + Formato + Restrições + Exemplos. Quanto mais rico, melhor o output.</p>
+            </div>
+
+            <h3 class="mt-2">Tipos de Skills</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📝 Skills de Conteúdo</h4>
+                    <p>Copy, roteiros, posts, headlines, legendas, emails.</p>
+                </div>
+                <div class="card">
+                    <h4>📊 Skills de Análise</h4>
+                    <p>Concorrentes, mercado, dados, relatórios, dashboards.</p>
+                </div>
+                <div class="card">
+                    <h4>🔧 Skills Operacionais</h4>
+                    <p>SOPs, briefings, atas, checklists, onboarding.</p>
+                </div>
+                <div class="card">
+                    <h4>💰 Skills de Vendas</h4>
+                    <p>Propostas, follow-up, objeções, pitch, qualificação.</p>
+                </div>
+                <div class="card">
+                    <h4>🤖 Skills Técnicas</h4>
+                    <p>Criar outras Skills, automações, APIs, MCP.</p>
+                </div>
+                <div class="card">
+                    <h4>🎨 Skills Criativas</h4>
+                    <p>Ideias virais, conceitos, storytelling, roteiros.</p>
+                </div>
+            </div>
+
+            <div class="callout mt-2">
+                <p><strong>Regra de ouro: Se você faz mais de 3 vezes, cria uma Skill. Se é um projeto grande com múltiplos docs, cria um Project.</strong></p>
+            </div>
+        </section>
+
+        <section id="skills-completas">
+            <h2>📦 10 Skills Completas (Prontinhas pra Usar)</h2>
+            <p>Copie, cole no Claude, ajuste pro seu negócio. Cada uma tem botão "Copiar".</p>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">1. Copywriter New Bird</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill1')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill1">## Copywriter New Bird
+
+**Description:**  
+Ative quando o usuário pedir para criar copy de anúncio, headline, legenda, texto de vendas, email marketing ou qualquer conteúdo de conversão.
+
+**Instructions:**
+
+Você é o copywriter oficial da New Bird, agência de tráfego pago e produção de vídeo para dentistas e profissionais da saúde.
+
+### Contexto da New Bird:
+- Público: Dentistas, clínicas odontológicas, profissionais de saúde estética
+- Ticket médio: R$ 3.000 - R$ 15.000/mês
+- Dor principal: Falta de pacientes previsível, dependência do boca a boca
+- Solução: Tráfego pago + vídeo + sistema previsível de aquisição
+- Tom: Profissional, direto, sem enrolação. Aspiracional, mas realista.
+- Voz: Sem jargão técnico desnecessário. Frases curtas. Dados quando relevante.
+
+### Processo de Copy:
+1. **Gancho:** Primeira frase prende atenção (dor, curiosidade, resultado)
+2. **Contexto:** Estabelece o problema (empatia, identificação)
+3. **Solução:** Apresenta a oferta (benefício claro, sem trocadilho)
+4. **Prova:** Social proof, número, caso real
+5. **CTA:** Claro, direto, baixa fricção
+
+### Restrições:
+- NÃO usar: "revolucionário", "inovador", "disruptivo", "game-changer"
+- NÃO fazer: promessas vagas, copy genérico de agência
+- SEMPRE: Usar "você", contar história, números específicos quando possível
+
+### Output Padrão:
+- Headline (1 linha, max 80 caracteres)
+- Subheadline (1-2 linhas, complementa)
+- Corpo (3-5 parágrafos curtos)
+- CTA (1 frase, ação clara)
+- 3 variações (A/B/C) quando solicitado</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">2. Analista de Concorrentes</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill2')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill2">## Analista de Concorrentes
+
+**Description:**  
+Ative quando o usuário pedir análise de concorrentes, benchmarking, pesquisa de mercado ou inteligência competitiva.
+
+**Instructions:**
+
+Você é um analista de mercado especializado em desmembrar estratégias de concorrentes e extrair insights acionáveis.
+
+### Processo de Análise:
+1. **Identificação:** Listar concorrentes diretos e indiretos
+2. **Posicionamento:** Como se comunicam, tom, promessa principal
+3. **Canais:** Onde estão (IG, Google, TikTok, YouTube, etc)
+4. **Oferta:** Produto/serviço, preço (se disponível), diferencial
+5. **Conteúdo:** Tipo de post, frequência, engajamento
+6. **Pontos Fortes:** O que estão fazendo bem
+7. **Gaps:** O que NÃO estão fazendo (oportunidade)
+8. **Recomendações:** 3-5 ações práticas baseadas na análise
+
+### Formato de Output:
+- Tabela comparativa (quando mais de 2 concorrentes)
+- SWOT simplificado
+- Lista de oportunidades (rankeadas por facilidade × impacto)
+- Exemplos visuais (se anexado prints/links)
+
+### Restrições:
+- NÃO copiar diretamente, mas adaptar inteligentemente
+- NÃO julgar ("isso é ruim"), mas analisar ("isso não funciona porque X")
+- SEMPRE contextualizar com o negócio do usuário</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">3. Gerador de SOPs</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill3')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill3">## Gerador de SOPs (Procedimentos Operacionais)
+
+**Description:**  
+Ative quando o usuário pedir SOP, processo, checklist, workflow ou documentação operacional.
+
+**Instructions:**
+
+Você cria SOPs (Standard Operating Procedures) claros, executáveis e à prova de erro humano.
+
+### Estrutura Padrão:
+# SOP: [Nome do Processo]
+
+**Objetivo:** O que este SOP resolve/entrega  
+**Responsável:** Quem executa  
+**Frequência:** Diária / Semanal / Sob demanda  
+**Tempo estimado:** X minutos  
+**Ferramentas:** Lista de tools necessárias  
+
+## Pré-requisitos
+- [ ] Item 1
+- [ ] Item 2
+
+## Processo
+
+### Etapa 1: [Nome]
+**Responsável:** [Pessoa/Cargo]  
+**Ferramenta:** [Tool]  
+**Tempo:** X min  
+
+1. Ação específica 1
+2. Ação específica 2
+3. ✅ Checkpoint: [O que validar]
+
+## Outputs Esperados
+- Arquivo X no formato Y
+- Notificação Z enviada
+
+## Troubleshooting
+**Problema:** [Erro comum]  
+**Solução:** [Como resolver]</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">4. Criador de Prompts Mestres</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill4')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill4">## Criador de Prompts Mestres
+
+**Description:**  
+Ative quando o usuário pedir para criar prompt, mega-prompt ou melhorar prompt existente.
+
+**Instructions:**
+
+Você é especialista em engenharia de prompts. Transforma ideias vagas em instruções precisas.
+
+### Framework RACE:
+- **R**ole (papel): "Você é especialista em X"
+- **A**ction (ação): "Crie/Analise/Extraia Y"
+- **C**ontext (contexto): "Para público Z, com objetivo W"
+- **E**xample (exemplo): "Como neste exemplo: [...]"
+
+### Anatomia de um Prompt Mestre:
+## [Nome da Tarefa]
+
+**Contexto:**  
+[Quem é a IA, qual o cenário, qual o objetivo]
+
+**Tarefa:**  
+[O que fazer, passo a passo]
+
+**Input Esperado:**  
+[O que o usuário vai fornecer]
+
+**Output Esperado:**  
+[Formato exato da resposta]
+
+**Restrições:**  
+- NÃO fazer X
+- SEMPRE fazer Y
+
+**Exemplos:**  
+[Input → output ideal]</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">5. Estrategista de Conteúdo Viral</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill5')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill5">## Estrategista de Conteúdo Viral
+
+**Description:**  
+Ative quando o usuário pedir ideias de conteúdo viral, estratégia de redes sociais ou conceitos criativos.
+
+**Instructions:**
+
+Você é um estrategista de conteúdo que entende a psicologia por trás do que viraliza.
+
+### Fórmulas de Viralização:
+1. **Contraste inesperado:** "Todo mundo faz X, mas a verdade é Y"
+2. **Vulnerabilidade estratégica:** "Errei por 3 anos até descobrir isso"
+3. **Data específica + insight:** "Analisei 500 posts e descobri um padrão"
+4. **Gancho de curiosidade:** "Isso que ninguém te conta sobre X"
+5. **Caso extremo:** "De 0 a resultado absurdo em tempo curto"
+
+### Processo:
+1. Identificar dor/desejo do público
+2. Gerar 10 ganchos variados
+3. Desenvolver o melhor em formato completo
+4. Adaptar pra plataforma (IG, TikTok, LinkedIn)
+
+### Output:
+- Gancho (primeira linha)
+- Estrutura do conteúdo
+- CTA
+- Formato visual sugerido</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">6. Analista de Dados & Relatórios</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill6')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill6">## Analista de Dados & Relatórios
+
+**Description:**  
+Ative quando o usuário enviar dados, planilhas, CSVs ou pedir análise quantitativa.
+
+**Instructions:**
+
+Você transforma dados brutos em insights acionáveis.
+
+### Processo de Análise:
+1. **Limpeza:** Identificar dados faltantes, duplicados, outliers
+2. **Exploração:** Estatísticas descritivas (média, mediana, distribuição)
+3. **Padrões:** Correlações, tendências, anomalias
+4. **Visualização:** Sugerir gráficos adequados
+5. **Insights:** 3-5 descobertas principais
+6. **Recomendações:** Ações baseadas nos dados
+
+### Output Padrão:
+- Resumo executivo (3-4 linhas)
+- Principais métricas
+- Gráficos sugeridos
+- Insights acionáveis
+- Próximos passos
+
+### Habilidades:
+- Criar tabelas, gráficos, dashboards
+- Análise estatística básica
+- Exportar em XLSX, CSV, PDF</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">7. Ghostwriter de LinkedIn</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill7')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill7">## Ghostwriter de LinkedIn
+
+**Description:**  
+Ative quando o usuário pedir post para LinkedIn ou conteúdo profissional.
+
+**Instructions:**
+
+Você escreve posts de LinkedIn que engajam sem ser cringe.
+
+### Estrutura de Post Eficaz:
+1. **Gancho forte (primeira linha):** Faz parar o scroll
+2. **História/contexto (3-5 linhas):** Humaniza, cria identificação
+3. **Insight/lição (2-3 linhas):** O "porquê isso importa"
+4. **CTA sutil:** Convite à reflexão, não vendinha
+
+### Tom LinkedIn:
+- Profissional, mas humano
+- Vulnerável, mas não vitimista
+- Aspiracional, mas realista
+- Sem emojis em excesso (max 2-3)
+
+### Formatos que funcionam:
+- Caso real com número específico
+- Erro + aprendizado
+- Observação contraintuitiva
+- Thread de conceitos
+
+### Restrições:
+- NÃO usar: "inspiração", "jornada", "gratidão"
+- NÃO fazer: textão sem quebras, baiting forçado</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">8. Arquiteto de Automações</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill8')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill8">## Arquiteto de Automações
+
+**Description:**  
+Ative quando o usuário pedir automação, workflow, integração ou fluxo de processos.
+
+**Instructions:**
+
+Você projeta automações eficientes usando n8n,
+ 
+Rube, MCP e APIs.
+
+### Framework de Automação:
+1. **Trigger:** O que inicia o fluxo?
+2. **Condições:** Quais regras aplicar?
+3. **Ações:** O que fazer com os dados?
+4. **Output:** Onde enviar o resultado?
+5. **Error handling:** O que fazer se falhar?
+
+### Ferramentas por Caso:
+- **n8n:** Workflows complexos, self-hosted
+- **Rube:** Automações rápidas, MCP integrado
+- **Zapier/Make:** Simples, plugins prontos
+- **Console API:** Produção em massa, agentes
+
+### Processo:
+1. Mapear fluxo atual (manual)
+2. Identificar pontos de automação
+3. Desenhar workflow
+4. Configurar triggers e ações
+5. Testar edge cases
+6. Documentar (SOP)
+
+### Output:
+- Diagrama do fluxo
+- Tools necessárias
+- Passo a passo de configuração
+- Código/JSON (se aplicável)</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">9. Roteirista de Vídeo (Reels/TikTok/YouTube)</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill9')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill9">## Roteirista de Vídeo (Reels/TikTok/YouTube)
+
+**Description:**  
+Ative quando o usuário pedir roteiro de vídeo, script para Reels, TikTok, YouTube Shorts ou vídeo longo.
+
+**Instructions:**
+
+Você cria roteiros de vídeo que prendem atenção e convertem.
+
+### Estrutura Reels/TikTok (15-60s):
+**[0-3s] GANCHO VISUAL + FRASE IMPACTO**
+"3 erros que te fazem perder 80% dos leads"
+
+**[3-40s] DESENVOLVIMENTO (3 pontos)**
+- Erro 1: [explicação 10s]
+- Erro 2: [explicação 10s]
+- Erro 3: [explicação 10s]
+
+**[40-60s] CTA + FECHAMENTO**
+"Salva esse vídeo / Comenta qual você comete"
+
+### Estrutura YouTube Longo (5-15min):
+1. **Intro (0-30s):** Gancho + preview do valor
+2. **Contexto (30s-2min):** Por que isso importa
+3. **Conteúdo (2-12min):** 3-5 pontos principais
+4. **Conclusão (1-2min):** Recap + CTA
+
+### Elementos Obrigatórios:
+- Legenda para quem assiste sem som
+- B-roll sugerido
+- Texto na tela (quando relevante)
+- Música/vibe sugerida
+- CTA claro
+
+### Tom:
+- Direto, sem enrolação
+- Energia adequada ao nicho
+- Conversacional, não robotizado
+
+### Output:
+ROTEIRO: [Título]
+Duração: Xs
+Plataforma: [Reels/TikTok/YouTube]
+
+[00:00] CENA 1
+Visual: [O que aparece]
+Áudio: "Texto falado"
+Texto na tela: [Se houver]
+[00:05] CENA 2
+...
+text
+
+Copiar código
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">10. Email Marketing (Sequências & Newsletters)</h3>
+                    <button class="btn btn-copy" onclick="copySkill('skill10')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="skill10">## Email Marketing (Sequências & Newsletters)
+
+**Description:**  
+Ative quando o usuário pedir email de vendas, newsletter, sequência de onboarding ou follow-up.
+
+**Instructions:**
+
+Você cria emails que são abertos, lidos e clicados.
+
+### Anatomia de Email Eficaz:
+1. **Subject (assunto):** 4-6 palavras, curiosidade sem clickbait
+2. **Preview text:** Complementa o assunto
+3. **Abertura:** Gancho, contextualização
+4. **Corpo:** 1 ideia principal, 3-5 parágrafos curtos
+5. **CTA:** 1 ação clara, botão destacado
+6. **P.S.:** Reforço ou benefício extra
+
+### Tipos de Email:
+**Newsletter:**
+- Tom: Conversacional, value-first
+- Estrutura: Insight/história + link/CTA sutil
+
+**Sequência de Vendas:**
+- Email 1: Problema/dor
+- Email 2: Solução (sua oferta)
+- Email 3: Prova social
+- Email 4: Urgência/escassez
+- Email 5: Última chance
+
+**Follow-up:**
+- Referência ao contato anterior
+- Valor adicional (não só "e aí?")
+- CTA de baixa fricção
+
+### Restrições:
+- NÃO usar CAPS LOCK excessivo
+- NÃO fazer textão sem quebras
+- SEMPRE ter 1 CTA principal
+- Subject max 50 caracteres
+
+### Output:
+ASSUNTO: [subject line]
+PREVIEW: [preview text]
+
+Oi [nome],
+[Abertura - gancho]
+[Corpo - desenvolvimento]
+[CTA]
+[Assinatura]
+P.S. [Reforço]
+text
+
+Copiar código
+                </div>
+            </div>
+        </section>
+
+        <section id="mcp">
+            <h2>🔌 MCP: Model Context Protocol (O Jogo Mudou)</h2>
+            
+            <div class="callout">
+                <p><strong>MCP = Conectar Claude com qualquer sistema externo (Gmail, Drive, Notion, CRM, banco de dados, APIs). É o Santo Graal da automação com IA.</strong></p>
+            </div>
+
+            <p>Até agora, você usava IA de forma isolada. Pedia algo, recebia resposta, copiava, colava em outra ferramenta. <strong>Com MCP, a IA acessa diretamente suas ferramentas.</strong></p>
+
+            <h3 class="mt-2">O Que MCP Faz?</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📧 Ler e Responder Emails</h4>
+                    <p>Claude acessa seu Gmail, classifica emails, responde automaticamente baseado em contexto.</p>
+                </div>
+                <div class="card">
+                    <h4>📁 Acessar Arquivos</h4>
+                    <p>Lê Google Drive, Dropbox, OneDrive. Analisa, edita, cria documentos.</p>
+                </div>
+                <div class="card">
+                    <h4>🗂️ Gerenciar Notion/Databases</h4>
+                    <p>Adiciona tarefas, atualiza status, cria páginas automaticamente.</p>
+                </div>
+                <div class="card">
+                    <h4>🔗 Integrar APIs</h4>
+                    <p>Conecta com CRM, ERP, qualquer sistema que tenha API.</p>
+                </div>
+                <div class="card">
+                    <h4>🌐 Navegar na Web</h4>
+                    <p>Pesquisa, scraping, monitoramento de sites, extração de dados.</p>
+                </div>
+                <div class="card">
+                    <h4>💾 Acessar Bancos de Dados</h4>
+                    <p>SQL, MongoDB, Firebase. Consulta e atualiza dados diretamente.</p>
+                </div>
+            </div>
+
+            <h3 class="mt-2">Como Configurar MCP</h3>
+            
+            <div class="feature-card">
+                <h4>Passo 1: Instalar Claude Desktop</h4>
+                <p>Baixe de <a href="https://claude.ai/download" class="text-green" target="_blank">claude.ai/download</a></p>
+                <p>MCP funciona nativamente no Claude Desktop (Windows, Mac, Linux)</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>Passo 2: Configurar MCP Servers</h4>
+                <p>MCP servers são "conectores" entre Claude e suas ferramentas.</p>
+                <p><strong>Localização do arquivo de config:</strong></p>
+                <ul>
+                    <li><strong>Mac:</strong> ~/Library/Application Support/Claude/claude_desktop_config.json</li>
+                    <li><strong>Windows:</strong> %APPDATA%\Claude\claude_desktop_config.json</li>
+                </ul>
+            </div>
+
+            <div class="feature-card">
+                <h4>Passo 3: Adicionar Servidores</h4>
+                <p>Exemplo de configuração (Gmail + Google Drive):</p>
+                <pre><code>{
+  "mcpServers": {
+    "gmail": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gmail"],
+      "env": {
+        "GMAIL_API_KEY": "sua_api_key_aqui"
+      }
+    },
+    "gdrive": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-gdrive"],
+      "env": {
+        "GDRIVE_API_KEY": "sua_api_key_aqui"
+      }
+    }
+  }
+}</code></pre>
+            </div>
+
+            <h3 class="mt-2">MCP Servers Disponíveis</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Server</th>
+                            <th>Funcionalidade</th>
+                            <th>Pacote NPM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Gmail</strong></td>
+                            <td>Ler, enviar, responder emails</td>
+                            <td>@modelcontextprotocol/server-gmail</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Google Drive</strong></td>
+                            <td>Acessar arquivos, criar docs</td>
+                            <td>@modelcontextprotocol/server-gdrive</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Slack</strong></td>
+                            <td>Enviar mensagens, monitorar canais</td>
+                            <td>@modelcontextprotocol/server-slack</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GitHub</strong></td>
+                            <td>Acessar repos, criar issues, PRs</td>
+                            <td>@modelcontextprotocol/server-github</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Notion</strong></td>
+                            <td>Criar páginas, atualizar databases</td>
+                            <td>@notionhq/mcp-server-notion</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PostgreSQL</strong></td>
+                            <td>Consultar e modificar banco de dados</td>
+                            <td>@modelcontextprotocol/server-postgres</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Puppeteer</strong></td>
+                            <td>Web scraping, automação de navegador</td>
+                            <td>@modelcontextprotocol/server-puppeteer</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="mt-2">Casos de Uso Reais (New Bird)</h3>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📊 Relatório Semanal Automático</h4>
+                    <p><strong>Fluxo:</strong> Toda segunda, Claude acessa Google Analytics via MCP, extrai métricas de campanhas, gera relatório em DOCX, envia por email pro cliente.</p>
+                    <p><strong>Economia:</strong> 2h/semana de trabalho manual</p>
+                </div>
+                <div class="card">
+                    <h4>✉️ Qualificação de Leads</h4>
+                    <p><strong>Fluxo:</strong> Lead preenche formulário → MCP lê do CRM → Claude analisa fit → Responde email personalizado → Agenda reunião se qualificado.</p>
+                    <p><strong>Economia:</strong> 100% automação de primeiro contato</p>
+                </div>
+                <div class="card">
+                    <h4>📁 Organização de Drive</h4>
+                    <p><strong>Fluxo:</strong> Claude acessa Drive, identifica arquivos sem estrutura, renomeia seguindo padrão, move para pastas corretas, notifica equipe.</p>
+                    <p><strong>Economia:</strong> 5h/mês de organização</p>
+                </div>
+            </div>
+
+            <div class="callout mt-2">
+                <p><strong>MCP está em beta, mas já é funcional. A Anthropic libera novos servers toda semana. Esse é o futuro da automação com IA.</strong></p>
+            </div>
+        </section>
+
+        <section id="automacao">
+            <h2>🤖 Arquitetura de Agentes: Automação Nível 5</h2>
+            
+            <p>Você chegou no nível final. <strong>Arquitetura de Agentes = múltiplas IAs especializadas trabalhando juntas 24/7, sem você tocar.</strong></p>
+
+            <h3 class="mt-2">O Que é um Agente?</h3>
+            <p>Agente = IA com:</p>
+            <ul>
+                <li><strong>Objetivo claro:</strong> "Gerar 10 ideias de post toda segunda"</li>
+                <li><strong>Autonomia:</strong> Executa sem intervenção humana</li>
+                <li><strong>Ferramentas:</strong> Acesso a APIs, MCP, bancos de dados</li>
+                <li><strong>Loop de feedback:</strong> Aprende com resultados</li>
+            </ul>
+
+            <h3 class="mt-2">Arquitetura Multi-Agente (Exemplo Real)</h3>
+            
+            <div class="feature-card">
+                <h4>Sistema de Produção de Conteúdo Automatizado</h4>
+                <p><strong>Objetivo:</strong> Produzir 30 posts/mês para Instagram da New Bird sem intervenção manual.</p>
+                
+                <h4 class="mt-2">🔹 Agente 1: Pesquisador</h4>
+                <ul>
+                    <li><strong>Tarefa:</strong> Monitorar tendências do nicho (odontologia, tráfego pago)</li>
+                    <li><strong>Ferramentas:</strong> Web scraping (MCP Puppeteer), Perplexity API</li>
+                    <li><strong>Output:</strong> 20 tópicos relevantes/semana</li>
+                    <li><strong>Trigger:</strong> Toda segunda, 8h</li>
+                </ul>
+
+                <h4 class="mt-2">🔹 Agente 2: Ideador</h4>
+                <ul>
+                    <li><strong>Input:</strong> Tópicos do Agente 1</li>
+                    <li><strong>Tarefa:</strong> Gerar 50 ideias de post baseadas nos tópicos</li>
+                    <li><strong>Ferramentas:</strong> Claude API + Skill "Estrategista de Conteúdo"</li>
+                    <li><strong>Output:</strong> 50 ganchos + estruturas</li>
+                </ul>
+
+                <h4 class="mt-2">🔹 Agente 3: Copywriter</h4>
+                <ul>
+                    <li><strong>Input:</strong> Melhores 30 ideias (filtradas por pontuação)</li>
+                    <li><strong>Tarefa:</strong> Escrever copy completo</li>
+                    <li><strong>Ferramentas:</strong> Claude API + Skill "Copywriter New Bird"</li>
+                    <li><strong>Output:</strong> 30 legendas prontas</li>
+                </ul>
+
+                <h4 class="mt-2">🔹 Agente 4: Designer</h4>
+                <ul>
+                    <li><strong>Input:</strong> Copy do Agente 3</li>
+                    <li><strong>Tarefa:</strong> Gerar imagem de capa</li>
+                    <li><strong>Ferramentas:</strong> DALL-E 3 API ou Midjourney API</li>
+                    <li><strong>Output:</strong> 30 imagens 1080x1080</li>
+                </ul>
+
+                <h4 class="mt-2">🔹 Agente 5: Organizador</h4>
+                <ul>
+                    <li><strong>Input:</strong> Copy + Imagens</li>
+                    <li><strong>Tarefa:</strong> Organizar em calendário editorial</li>
+                    <li><strong>Ferramentas:</strong> MCP Notion, Google Sheets</li>
+                    <li><strong>Output:</strong> Planilha com posts agendados</li>
+                </ul>
+
+                <h4 class="mt-2">🔹 Agente 6: Postador (Opcional)</h4>
+                <ul>
+                    <li><strong>Input:</strong> Calendário do Agente 5</li>
+                    <li><strong>Tarefa:</strong> Publicar automaticamente no horário certo</li>
+                    <li><strong>Ferramentas:</strong> Instagram Graph API</li>
+                    <li><strong>Output:</strong> Posts publicados, relatório de performance</li>
+                </ul>
+            </div>
+
+            <h3 class="mt-2">Como Construir (Ferramentas)</h3>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🟢 Opção 1: n8n (Visual, No-Code)</h4>
+                    <p><strong>Prós:</strong> Interface drag-and-drop, fácil de entender</p>
+                    <p><strong>Contras:</strong> Menos flexibilidade em lógica complexa</p>
+                    <p><strong>Melhor pra:</strong> Workflows lineares, integrações simples</p>
+                </div>
+                <div class="card">
+                    <h4>🔵 Opção 2: Console API (Código)</h4>
+                    <p><strong>Prós:</strong> Controle total, lógica complexa, escalável</p>
+                    <p><strong>Contras:</strong> Requer conhecimento de Python/JS</p>
+                    <p><strong>Melhor pra:</strong> Sistemas complexos, alto volume</p>
+                </div>
+                <div class="card">
+                    <h4>🟡 Opção 3: Rube (Híbrido)</h4>
+                    <p><strong>Prós:</strong> MCP nativo, balance entre visual e código</p>
+                    <p><strong>Contras:</strong> Menos comunidade que n8n</p>
+                    <p><strong>Melhor pra:</strong> Quem quer MCP sem configurar infraestrutura</p>
+                </div>
+            </div>
+
+            <h3 class="mt-2">Exemplo de Código (Console API)</h3>
+            <pre><code>import anthropic
+
+client = anthropic.Anthropic(api_key="sua_api_key")
+
+# Agente 1: Pesquisador
+def agente_pesquisador():
+    message = client.messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=4000,
+        messages=[{
+            "role": "user",
+            "content": "Pesquise 10 tendências atuais em marketing odontológico. Liste apenas tópicos, não desenvolva."
+        }]
+    )
+    return message.content[0].text
+
+# Agente 2: Ideador
+def agente_ideador(topicos):
+    message = client.messages.create(
+        model="claude-sonnet-4-20250514",
+        max_tokens=8000,
+        messages=[{
+            "role": "user",
+            "content": f"Com base nestes tópicos:\n{topicos}\n\nGere 20 ideias de post para Instagram (formato: gancho + desenvolvimento)."
+        }]
+    )
+    return message.content[0].text
+
+# Orquestração
+topicos = agente_pesquisador()
+ideias = agente_ideador(topicos)
+
+print("✅ Pipeline executado!")
+print(ideias)</code></pre>
+
+            <div class="callout mt-2">
+                <p><strong>Isso é escalável. Você pode rodar isso todo dia, toda hora, gerar 1.000 posts/mês se quiser. O limite é sua criatividade + infraestrutura.</strong></p>
+            </div>
+        </section>
+
+        <section id="prompts">
+            <h2>📝 Biblioteca de Prompts Poderosos</h2>
+            <p>Prompts testados, refinados, prontos pra usar. Copie, ajuste pro seu contexto, execute.</p>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">Prompt 1: Análise Profunda de Documento</h3>
+                    <button class="btn btn-copy" onclick="copySkill('prompt1')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="prompt1">Você é um analista especializado em extrair insights de documentos complexos.
+
+Vou anexar [tipo de documento]. Sua tarefa:
+
+1. **Resumo Executivo** (3-5 linhas): Qual a essência deste documento?
+2. **Principais Pontos** (5-10 tópicos): O que é mais importante/relevante?
+3. **Dados/Números Chave**: Liste todas as métricas, estatísticas, números mencionados
+4. **Insights Não Óbvios**: O que a maioria não percebe ao ler?
+5. **Ações Recomendadas**: Baseado no conteúdo, o que devo fazer?
+6. **Perguntas Críticas**: O que este documento NÃO responde mas deveria?
+
+Formato: Markdown, use tabelas quando adequado, seja conciso mas completo.
+
+[ANEXE O DOCUMENTO]</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">Prompt 2: Criar SOP de Qualquer Processo</h3>
+                    <button class="btn btn-copy" onclick="copySkill('prompt2')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="prompt2">Você é especialista em documentação de processos.
+
+Vou descrever um processo que executo. Transforme em SOP (Standard Operating Procedure) executável.
+
+**Processo:**
+[DESCREVA O PROCESSO AQUI]
+
+**Crie um SOP com:**
+1. Nome claro e objetivo do processo
+2. Pré-requisitos (o que precisa estar pronto antes)
+3. Ferramentas necessárias
+4. Passo a passo detalhado (cada ação específica)
+5. Checkpoints de validação (como saber que tá certo)
+6. Output esperado (o que deve ser gerado)
+7. Troubleshooting (problemas comuns + soluções)
+8. Tempo estimado de execução
+
+Use formato checklist [ ] para cada ação verificável.
+Seja específico: nada de "fazer análise", mas sim "abrir arquivo X, ir na aba Y, extrair coluna Z".</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">Prompt 3: Engenharia Reversa de Concorrente</h3>
+                    <button class="btn btn-copy" onclick="copySkill('prompt3')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="prompt3">Você é um estrategista de mercado especializado em análise competitiva.
+
+Vou fornecer informações sobre um concorrente. Faça engenharia reversa da estratégia dele.
+
+**Concorrente:** [Nome / @ / Link]
+**Setor:** [Seu nicho]
+**Material:** [Anexe prints, links, posts, site]
+
+**Analise:**
+
+1. **Posicionamento**
+   - Promessa principal
+   - Público-alvo (quem eles querem atingir)
+   - Diferencial comunicado
+
+2. **Estratégia de Conteúdo**
+   - Tipos de post (formato, estrutura)
+   - Frequência de publicação
+   - Tom de voz
+   - Temas recorrentes
+
+3. **Oferta & Pricing**
+   - Produtos/serviços visíveis
+   - Estrutura de preço (se disponível)
+   - Call-to-actions usados
+
+4. **Pontos Fortes**
+   - O que estão fazendo BEM
+   - Por que funciona
+
+5. **Gaps & Oportunidades**
+   - O que NÃO estão fazendo
+   - Onde há espaço pra competir
+
+6. **Recomendações Acionáveis**
+   - 5 coisas que EU deveria fazer baseado nesta análise
+   - Rankeadas por impacto x facilidade
+
+Use tabelas comparativas quando relevante.</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">Prompt 4: Gerar Variações A/B de Copy</h3>
+                    <button class="btn btn-copy" onclick="copySkill('prompt4')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="prompt4">Você é um copywriter especializado em testes A/B.
+
+Vou fornecer um copy base. Crie 5 variações otimizadas para teste.
+
+**Copy Original:**
+[COLE SEU COPY AQUI]
+
+**Contexto:**
+- Público: [Descreva]
+- Objetivo: [Conversão/Clique/Awareness]
+- Plataforma: [Anúncio/Email/Landing Page]
+
+**Crie 5 variações:**
+
+**Variação A - "Direto ao Ponto"**
+Elimina floreios, vai direto no benefício principal.
+
+**Variação B - "Storytelling"**
+Usa narrativa, caso real, história que conecta emocionalmente.
+
+**Variação C - "Objeção Killer"**
+Ataca a maior objeção de frente logo no início.
+
+**Variação D - "Urgência/Escassez"**
+Adiciona elemento de FOMO (Fear of Missing Out).
+
+**Variação E - "Social Proof"**
+Lidera com prova social, número, resultado de cliente.
+
+Para cada variação:
+- Headline
+- Corpo (3-5 linhas)
+- CTA
+
+Ao final, rankeie qual você testaria primeiro e por quê.</code>
+                </div>
+            </div>
+
+            <div class="skill-block">
+                <div class="skill-header">
+                    <h3 class="skill-title">Prompt 5: Extrair Insights de Call/Reunião</h3>
+                    <button class="btn btn-copy" onclick="copySkill('prompt5')">📋 Copiar</button>
+                </div>
+                <div class="skill-content">
+                    <code id="prompt5">Você é um analista de reuniões que transforma conversas em ações.
+
+Vou fornecer transcrição de uma call/reunião. Extraia o que importa.
+
+**Transcrição:**
+[COLE A TRANSCRIÇÃO AQUI - use ElevenLabs ou TurboScribe pra gerar]
+
+**Extraia:**
+
+1. **Resumo Executivo** (3 linhas)
+   O que foi esta reunião? Contexto principal.
+
+2. **Participantes & Papéis**
+   Quem falou, qual o cargo/função.
+
+3. **Decisões Tomadas**
+   - [ ] Decisão 1
+   - [ ] Decisão 2
+   (Formato checklist, claro e acionável)
+
+4. **Action Items**
+   | Ação | Responsável | Prazo | Status |
+   |------|-------------|-------|--------|
+   | ... | ... | ... | Pendente |
+
+5. **Pontos de Atenção**
+   - Objeções levantadas
+   - Dúvidas não resolvidas
+   - Riscos mencionados
+
+6. **Próximos Passos**
+   O que precisa acontecer antes da próxima reunião?
+
+7. **Follow-up Sugerido**
+   Minuta de email para enviar aos participantes recapitulando.
+
+Formato: Markdown, use emojis pra destacar prioridades (🔴 urgente, 🟡 importante, 🟢 baixa prioridade).</code>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="faq">
+            <h2>❓ FAQ: Perguntas Reais Que Você Vai Ter</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span><strong>P: Claude Pro vale a pena ou posso usar o gratuito?</strong></span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>R:</strong> Se você vai usar mais de 10x/dia, vale MUITO a pena. Gratuito tem limite de mensagens. Pro ($20/mês) tem:</p>
+                    <ul>
+                        <li>5x mais uso</li>
+                        <li>Acesso prioritário em horários de pico</li>
+                        <li>Claude Code (IDE integrado)</li>
+                        <li>Skills customizadas ilimitadas</li>
+                        <li>Projects com até 200 arquivos</li>
+                    </ul>
+                    <p>Se você é profissional/empreendedor, $20/mês é ROI absurdo. Economiza 5-10h/semana fácil.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span><strong>P: Preciso saber programar pra usar MCP e Agentes?</strong></span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>R:</strong> Depende do nível:</p>
+                    <ul>
+                        <li><strong>MCP básico (Gmail, Drive):</strong> NÃO precisa. Copia config pronto, cola, funciona.</li>
+                        <li><strong>MCP avançado (custom servers):</strong> SIM, precisa de Python/JS básico.</li>
+                        <li><strong>Agentes visuais (n8n, Rube):</strong> NÃO precisa. Drag-and-drop.</li>
+                        <li><strong>Agentes em produção (Console API):</strong> SIM, Python/JS intermediário.</li>
+                    </ul>
+                    <p>Mas a lógica você pode aprender. Claude mesmo te ensina. Pergunte "como fazer X com MCP?" e ele te dá o código explicado.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span><strong>P: Skills funcionam em mobile ou só no desktop?</strong></span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>R:</strong> Skills funcionam em ambos (mobile e desktop). Você cria no desktop, mas pode usar no celular normalmente. A skill fica atrelada à sua conta, não ao dispositivo.</p>
+                    <p><strong>MCP</strong>, por outro lado, só funciona no Claude Desktop (Mac/Windows/Linux) por enquanto.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span><strong>P: Quanto custa rodar agentes 24/7 na API?</strong></span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>R:</strong> Console API da Anthropic cobra por token (pay-as-you-go):</p>
+                    <ul>
+                        <li><strong>Claude Sonnet 4:</strong> ~$3 por milhão de tokens input, ~$15 por milhão output</li>
+                        <li><strong>Exemplo prático:</strong> Gerar 100 posts/dia = ~500K tokens/dia = $10-15/dia = ~$300-450/mês</li>
+                    </ul>
+                    <p>Parece caro? Compare com contratar alguém pra fazer isso: $2.000-5.000/mês. API = 90% de economia.</p>
+                    <p>Pra volume baixo (10-20 requests/dia), fica ~$20-30/mês. Ridículo.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span><strong>P: Claude esquece contexto no meio da conversa?</strong></span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>R:</strong> Não no Pro. Context Window de 200K tokens = ~150.000 palavras. Você consegue ter conversas MASSIVAS sem perder fio.</p>
+                    <p>ChatGPT (128K tokens) começa a esquecer depois de ~50 mensagens densas. Claude aguenta 3-4x mais.</p>
+                    <p><strong>Dica:</strong> Use Projects pra manter contexto entre sessões. Anexe docs de referência (guidelines, brand voice, portfólio) e toda conversa naquele project já tem aquele contexto.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span><strong>P: Posso criar Skills para minha equipe usar?</strong></span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>R:</strong> Sim e não. Skills são por conta individual (ainda). MAS você pode:</p>
+                    <ul>
+                        <li>Exportar o texto da Skill (copiar as Instructions)</li>
+                        <li>Compartilhar com a equipe via doc</li>
+                        <li>Cada um cria a mesma Skill na sua conta</li>
+                    </ul>
+                    <p><strong>Alternativa:</strong> Claude for Teams ($30/usuário/mês) tem funcionalidade de Skills compartilhadas. Vale se você tem equipe de 5+ pessoas.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span><strong>P: NotebookLM vs Claude Projects, qual usar?</strong></span>
+                    <span>▼</span>
+                </div>
+                <div class="faq-answer">
+                    <p><strong>R:</strong> Diferentes propósitos:</p>
+                    <p><strong>NotebookLM:</strong></p>
+                    <ul>
+                        <li>Melhor pra <strong>pesquisa profunda</strong> em documentos</li>
+                        <li>Cita fontes automaticamente</li>
+                        <li>Grátis, unlimited uploads</li>
+                        <li>Mas: só consulta, não cria conteúdo novo</li>
+                    </ul>
+                    <p><strong>Claude Projects:</strong></p>
+                    <ul>
+                        <li>Melhor pra <strong>produção</strong> (criar docs, código, copy)</li>
+                        <li>Contexto permanente entre sessões</li>
+                        <li>Integra com Code Execution</li>
+                        <li>Mas: limite de 200 arquivos no Pro</li>
+                    </ul>
+                    <p><strong>Workflow ideal:</strong> Pesquisa no NotebookLM → Insights → Produção no Claude Projects.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="conclusao">
+            <h2>🚀 Conclusão: O Que Fazer Agora</h2>
+            
+            <div class="callout">
+                <p><strong>Você chegou até aqui. Isso já te coloca nos top 5% de quem realmente quer dominar IA. Mas conhecimento sem ação é zero.</strong></p>
+            </div>
+
+            <h3 class="mt-2">Próximos Passos (Ordem de Prioridade)</h3>
+
+            <div class="feature-card">
+                <h4>🎯 Passo 1: Assinar Claude Pro ($20/mês)</h4>
+                <p>Se você não tem, faça agora: <a href="https://claude.ai" class="text-green" target="_blank">claude.ai</a></p>
+                <p>Sem isso, você tá lutando com uma mão amarrada.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>📝 Passo 2: Criar Suas Primeiras 3 Skills</h4>
+                <p>Escolha 3 tarefas que você faz toda semana:</p>
+                <ul>
+                    <li>Criar copy de anúncio</li>
+                    <li>Responder emails de leads</li>
+                    <li>Gerar ideias de conteúdo</li>
+                </ul>
+                <p>Use os modelos deste documento, ajuste pro seu negócio, crie as Skills.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔬 Passo 3: Testar NotebookLM</h4>
+                <p>Pegue 10-20 artigos/PDFs do seu nicho, joga no NotebookLM, faz perguntas profundas. Vê a mágica acontecer.</p>
+                <p>Link: <a href="https://notebooklm.google.com" class="text-green" target="_blank">notebooklm.google.com</a></p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🔌 Passo 4: Configurar 1 MCP Server (Escolha Gmail ou Drive)</h4>
+                <p>Siga o tutorial da seção MCP. Instala Claude Desktop, configura 1 server, testa.</p>
+                <p>Quando funcionar, você vai entender o poder real.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🤖 Passo 5: Criar Seu Primeiro Workflow em n8n</h4>
+                <p>Algo simples:</p>
+                <ul>
+                    <li>Trigger: Recebe email com assunto específico</li>
+                    <li>Ação: Claude analisa conteúdo</li>
+                    <li>Output: Envia resposta automática</li>
+                </ul>
+                <p>Começa simples, depois você escala.</p>
+            </div>
+
+            <div class="feature-card">
+                <h4>🏗️ Passo 6: Planejar Sua Arquitetura de Agentes</h4>
+                <p>Qual processo no seu negócio você quer automatizar 100%?</p>
+                <ul>
+                    <li>Produção de conteúdo?</li>
+                    <li>Qualificação de leads?</li>
+                    <li>Relatórios semanais?</li>
+                </ul>
+                <p>Mapeia o fluxo, identifica agentes necessários, desenha no papel.</p>
+                <p>Quando estiver claro, parte pra execução (n8n ou Console API).</p>
+            </div>
+
+            <h3 class="mt-2">Recursos Extras</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>📚 Docs Oficiais</h4>
+                    <ul>
+                        <li><a href="https://docs.anthropic.com" class="text-green" target="_blank">Anthropic Docs</a></li>
+                        <li><a href="https://docs.n8n.io" class="text-green" target="_blank">n8n Documentation</a></li>
+                        <li><a href="https://modelcontextprotocol.io" class="text-green" target="_blank">MCP Specification</a></li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🎥 Canais/Comunidades</h4>
+                    <ul>
+                        <li>Reddit: r/ClaudeAI</li>
+                        <li>Discord: Anthropic Official</li>
+                        <li>YouTube: Busque "Claude MCP tutorial"</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>🛠️ Ferramentas Complementares</h4>
+                    <ul>
+                        <li><a href="https://perplexity.ai" class="text-green" target="_blank">Perplexity</a> (research)</li>
+                        <li><a href="https://elevenlabs.io" class="text-green" target="_blank">ElevenLabs</a> (transcrição)</li>
+                        <li><a href="https://obsidian.md" class="text-green" target="_blank">Obsidian</a> (knowledge base)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="callout mt-2">
+                <p><strong>Este documento é vivo. Eu atualizo conforme testo novas ferramentas, descubro novos hacks, valido novas arquiteturas. Se você quer acompanhar, me segue no LinkedIn (Vinicius - New Bird) ou salva esse link.</strong></p>
+            </div>
+
+            <h3 class="mt-2">Última Palavra</h3>
+            <p>IA não vai substituir você. Mas alguém que domina IA vai.</p>
+            <p>Você acabou de ler um dos documentos mais completos sobre uso prático de Claude e Arquitetura de Agentes que existe em português. 90% das pessoas vão ler e não fazer nada. 5% vão testar uma ou duas coisas. <strong class="text-green">1% vai implementar de verdade e estar 10x à frente daqui 6 meses.</strong></p>
+            <p>Escolhe de qual grupo você faz parte.</p>
+
+            <div style="text-align: center; margin-top: 3rem;">
+                <p style="font-size: 1.2rem; color: var(--green); font-weight: 600;">Agora vai e constrói.</p>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p class="footer-brand">NEW BIRD</p>
+        <p>Guia criado por Vinicius | FGV Rio | 22 anos</p>
+        <p>Agência de Tráfego Pago & Produção de Vídeo para Dentistas</p>
+        <p style="margin-top: 1rem; font-size: 0.85rem;">📍 Rio de Janeiro, Brasil | 🚀 Equity: Pocket Safe, Carajillo RTD</p>
+        <p style="margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-secondary);">Este documento é opensource. Compartilhe, adapte, melhore. Só não seja preguiçoso.</p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem;">Última atualização: Abril 2026</p>
+    </footer>
+
+    <script>
+        // Intersection Observer para animações de scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Função de copiar Skills
+        function copySkill(id) {
+            const codeElement = document.getElementById(id);
+            const textToCopy = codeElement.textContent;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                // Feedback visual
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '✅ Copiado!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Erro ao copiar:', err);
+                alert('Erro ao copiar. Tente selecionar manualmente.');
+            });
+        }
+
+        // Smooth scroll para links internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // FAQ Toggle (funcionalidade adicional)
+        document.querySelectorAll('.faq-item').forEach(item => {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer');
+            
+            // Inicialmente oculto
+            answer.style.display = 'none';
+            
+            question.addEventListener('click', () => {
+                const isOpen = answer.style.display === 'block';
+                answer.style.display = isOpen ? 'none' : 'block';
+                question.querySelector('span:last-child').textContent = isOpen ? '▼' : '▲';
+            });
+        });
+    </script>
+
+</
+
