@@ -503,6 +503,413 @@
             <li><a href="#claude">Claude vs ChatGPT</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#skills-completas">10 Skills</a></li>
+            <!-- SEÇÃO: CLAUDE CODE - O QUE É E COMO USAR -->
+<section id="claude-code">
+    <h2>💻 Claude Code: Seu IDE com IA Integrada</h2>
+    
+    <div class="callout">
+        <p><strong>Claude Code = VS Code + Claude trabalhando juntos. Ele edita múltiplos arquivos, roda código, cria projetos completos. Engoliu Lovable, Bolt, v0, Cursor.</strong></p>
+    </div>
+
+    <h3 class="mt-2">O Que Claude Code Faz (e Por Que Mudou o Jogo)</h3>
+    
+    <div class="card-grid">
+        <div class="card">
+            <h4>🗂️ Edita Múltiplos Arquivos Simultaneamente</h4>
+            <p>Você diz "cria um sistema de login com backend Node + frontend React", ele cria toda a estrutura de pastas, arquivos, código, configurações.</p>
+        </div>
+        <div class="card">
+            <h4>🔧 Acessa Arquivos Locais</h4>
+            <p>Diferente do Claude.ai (web), o Claude Code vê sua pasta de projeto, lê todos os arquivos, entende o contexto completo.</p>
+        </div>
+        <div class="card">
+            <h4>⚡ Executa Código em Tempo Real</h4>
+            <p>Terminal integrado. Roda npm install, python scripts, testa bugs, debugga em tempo real.</p>
+        </div>
+        <div class="card">
+            <h4>🎨 Design to Code (com Referência Visual)</h4>
+            <p>Anexa print do Figma/Pinterest, ele gera o código HTML/CSS/React. Lovable e Bolt fazem isso, mas Claude Code faz melhor e grátis (se você tem Pro).</p>
+        </div>
+        <div class="card">
+            <h4>🔄 Refatoração Inteligente</h4>
+            <p>Pede "otimiza esse código", "adiciona error handling", "migra de JS pra TS" — ele faz mantendo tudo funcionando.</p>
+        </div>
+        <div class="card">
+            <h4>📦 Cria Apps Completos</h4>
+            <p>Landing pages, dashboards, APIs, scrapers, automações. Do zero até deploy.</p>
+        </div>
+    </div>
+
+    <h3 class="mt-2">Como Usar Claude Code (Passo a Passo)</h3>
+
+    <div class="feature-card">
+        <h4>1. Instalar Claude Desktop</h4>
+        <p>Baixe de <a href="https://claude.ai/download" class="text-green" target="_blank">claude.ai/download</a></p>
+        <p>Disponível pra Mac, Windows, Linux. Requer Claude Pro ($20/mês).</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>2. Abrir Modo Code</h4>
+        <p>No Claude Desktop, clique no ícone <strong>"Code"</strong> (canto superior direito, parece um terminal).</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>3. Dar Acesso à Pasta do Projeto</h4>
+        <p>Claude pede permissão pra acessar a pasta. Autorize. Ele vai ler todos os arquivos e entender o contexto.</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>4. Falar o Que Quer Construir</h4>
+        <p><strong>Exemplo:</strong></p>
+        <pre><code>Cria um sistema de gestão de leads com:
+- Backend: Node.js + Express + MongoDB
+- Frontend: React + TailwindCSS
+- Funcionalidades: CRUD de leads, filtros, exportar CSV
+- Autenticação: JWT
+
+Estrutura de pastas profissional, com README explicando como rodar.</code></pre>
+        <p>Ele cria TUDO. Pastas, arquivos, código, package.json, .env.example, README.</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>5. Iterar e Refinar</h4>
+        <p>Não ficou perfeito? Peça ajustes:</p>
+        <ul>
+            <li>"Adiciona validação de email no cadastro"</li>
+            <li>"Muda a cor primária pra verde #00ff88"</li>
+            <li>"Adiciona paginação na lista de leads"</li>
+        </ul>
+        <p>Ele edita os arquivos corretos, mantém a consistência.</p>
+    </div>
+
+    <h3 class="mt-2">Claude Code vs Concorrentes</h3>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ferramenta</th>
+                    <th>Prós</th>
+                    <th>Contras</th>
+                    <th>Preço</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Claude Code</strong></td>
+                    <td>Context de 200K tokens, edita múltiplos arquivos, execução local, MCP integrado</td>
+                    <td>Requer Claude Pro, ainda em beta</td>
+                    <td>$20/mês (Pro)</td>
+                </tr>
+                <tr>
+                    <td><strong>Cursor</strong></td>
+                    <td>IDE dedicado, muito polido, bom pra desenvolvedores</td>
+                    <td>Caro ($20/mês separado), context menor</td>
+                    <td>$20/mês</td>
+                </tr>
+                <tr>
+                    <td><strong>GitHub Copilot</strong></td>
+                    <td>Integrado ao VS Code, sugestões rápidas</td>
+                    <td>Não edita múltiplos arquivos, menos inteligente</td>
+                    <td>$10/mês</td>
+                </tr>
+                <tr>
+                    <td><strong>Lovable / Bolt / v0</strong></td>
+                    <td>Visual, sem instalar nada, bom pra MVPs rápidos</td>
+                    <td>Código proprietário, difícil de customizar, caro</td>
+                    <td>$20-50/mês</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="mt-2">Casos de Uso Reais</h3>
+
+    <div class="card-grid">
+        <div class="card">
+            <h4>📊 Dashboard de Métricas (New Bird)</h4>
+            <p><strong>Prompt:</strong> "Cria um dashboard que puxa dados do Google Sheets via API e mostra gráficos de conversão por campanha. React + Recharts."</p>
+            <p><strong>Resultado:</strong> Dashboard completo em 10 minutos. Antes levava 2 dias.</p>
+        </div>
+        <div class="card">
+            <h4>🤖 Scraper de Concorrentes</h4>
+            <p><strong>Prompt:</strong> "Cria um scraper que monitora preços de 5 concorrentes todo dia e salva num CSV."</p>
+            <p><strong>Resultado:</strong> Script Python com Puppeteer + scheduling. Automação completa.</p>
+        </div>
+        <div class="card">
+            <h4>🎨 Landing Page do Zero</h4>
+            <p><strong>Prompt:</strong> "Anexa esse print do Figma, recria em HTML + Tailwind responsivo."</p>
+            <p><strong>Resultado:</strong> Pixel-perfect em minutos. Deploy no Vercel com um comando.</p>
+        </div>
+    </div>
+
+    <div class="callout mt-2">
+        <p><strong>Se você não tá usando Claude Code, tá desperdiçando 50% do potencial do Claude. É a diferença entre ter um consultor e ter um desenvolvedor full-time.</strong></p>
+    </div>
+</section>
+
+<!-- SEÇÃO: 20 SKILLS COMPACTAS ADICIONAIS -->
+<section id="skills-compactas">
+    <h2>🎯 +20 Skills Compactas (Use e Adapte)</h2>
+    <p>Aqui estão mais 20 Skills prontas. Copie, cole no Claude, personalize pro seu caso.</p>
+
+    <div class="compact-skills">
+        <div class="compact-skill">
+            <h5>11. Gerador de Headlines Virais</h5>
+            <p><strong>Description:</strong> Ative quando pedir headline, título, gancho viral.<br><strong>Uso:</strong> Cria 20 variações de headlines usando fórmulas de curiosidade, contraste, especificidade.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>12. Especialista em SEO On-Page</h5>
+            <p><strong>Description:</strong> Ative quando pedir otimização SEO, meta tags, estrutura de conteúdo.<br><strong>Uso:</strong> Analisa conteúdo, sugere palavras-chave, melhora legibilidade, cria meta descriptions.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>13. Roteirista de Carrossel (Instagram)</h5>
+            <p><strong>Description:</strong> Ative quando pedir carrossel, conteúdo educativo pra IG.<br><strong>Uso:</strong> Cria 10 slides com gancho, desenvolvimento, CTA. Estrutura storytelling.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>14. Analista de Funil de Vendas</h5>
+            <p><strong>Description:</strong> Ative quando enviar dados de conversão, funil, métricas de vendas.<br><strong>Uso:</strong> Identifica gargalos, sugere otimizações, calcula ROI.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>15. Criador de Landing Pages (Copy)</h5>
+            <p><strong>Description:</strong> Ative quando pedir copy de landing page, página de vendas.<br><strong>Uso:</strong> Estrutura hero, benefícios, objeções, CTA. Framework PAS (Problema-Agitação-Solução).</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>16. Especialista em Cold Email</h5>
+            <p><strong>Description:</strong> Ative quando pedir email frio, outreach B2B.<br><strong>Uso:</strong> Cria sequência de 3-5 emails personalizados com pesquisa sobre o lead.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>17. Moderador de Comunidade (Respostas)</h5>
+            <p><strong>Description:</strong> Ative quando pedir resposta pra comentários, DMs, comunidade.<br><strong>Uso:</strong> Tom empático, resolve objeção, direciona pra ação (venda/engajamento).</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>18. Gerador de Pesquisas de Mercado</h5>
+            <p><strong>Description:</strong> Ative quando pedir questionário, pesquisa, survey.<br><strong>Uso:</strong> Cria perguntas estratégicas pra validar hipóteses, entender dores.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>19. Especialista em Storytelling de Marca</h5>
+            <p><strong>Description:</strong> Ative quando pedir história da marca, manifesto, sobre.<br><strong>Uso:</strong> Estrutura narrativa hero's journey, conecta emocionalmente.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>20. Criador de Webinar (Estrutura + Slides)</h5>
+            <p><strong>Description:</strong> Ative quando pedir estrutura de webinar, apresentação ao vivo.<br><strong>Uso:</strong> Roteiro minuto a minuto, slides sugeridos, pontos de engajamento.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>21. Analista de Persona (ICP)</h5>
+            <p><strong>Description:</strong> Ative quando pedir persona, ICP, avatar de cliente.<br><strong>Uso:</strong> Cria persona detalhada (demográfico, psicográfico, dores, objeções).</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>22. Gerador de Scripts de Atendimento</h5>
+            <p><strong>Description:</strong> Ative quando pedir script de vendas, atendimento, qualificação.<br><strong>Uso:</strong> Fluxograma de perguntas, respostas pra objeções, fechamento.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>23. Especialista em Pricing (Precificação)</h5>
+            <p><strong>Description:</strong> Ative quando pedir estratégia de preço, pacotes, ofertas.<br><strong>Uso:</strong> Analisa custo, mercado, percepção de valor. Sugere tiers.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>24. Criador de Case Studies</h5>
+            <p><strong>Description:</strong> Ative quando pedir case de sucesso, prova social.<br><strong>Uso:</strong> Estrutura antes/depois, métricas, storytelling do cliente.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>25. Gerador de Ideias de Produto</h5>
+            <p><strong>Description:</strong> Ative quando pedir brainstorm de produto, feature, oferta.<br><strong>Uso:</strong> Técnicas de ideação (SCAMPER, Jobs-to-be-Done), valida viabilidade.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>26. Especialista em Retenção de Clientes</h5>
+            <p><strong>Description:</strong> Ative quando pedir estratégia de churn, retenção, upsell.<br><strong>Uso:</strong> Analisa motivos de cancelamento, sugere ações de retenção.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>27. Criador de Quizzes Interativos</h5>
+            <p><strong>Description:</strong> Ative quando pedir quiz, diagnóstico, ferramenta de lead magnet.<br><strong>Uso:</strong> Estrutura perguntas, lógica de pontuação, resultados personalizados.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>28. Analista de Lifetime Value (LTV)</h5>
+            <p><strong>Description:</strong> Ative quando enviar dados de clientes, receita recorrente.<br><strong>Uso:</strong> Calcula LTV, CAC, payback, sugere otimizações de economia unitária.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>29. Gerador de Bio/Sobre Profissional</h5>
+            <p><strong>Description:</strong> Ative quando pedir bio de Instagram, LinkedIn, site.<br><strong>Uso:</strong> 3 versões (curta, média, longa). Tom profissional mas humano.</p>
+        </div>
+
+        <div class="compact-skill">
+            <h5>30. Especialista em Naming (Nomes de Marca/Produto)</h5>
+            <p><strong>Description:</strong> Ative quando pedir nome pra marca, produto, campanha.<br><strong>Uso:</strong> 50 sugestões categorizadas (descritivo, evocativo, inventado). Checa domínio disponível.</p>
+        </div>
+    </div>
+</section>
+
+<!-- SEÇÃO: NOTEBOOKLM EXPLICADO -->
+<section id="notebooklm">
+    <h2>📚 NotebookLM: O Oráculo dos Seus Documentos</h2>
+    
+    <div class="callout">
+        <p><strong>NotebookLM = IA treinada EXCLUSIVAMENTE nos seus documentos. Não usa conhecimento geral, só o que você alimenta. Grátis, ilimitado, cita fontes.</strong></p>
+    </div>
+
+    <h3 class="mt-2">O Que NotebookLM Faz (e Por Que é Único)</h3>
+
+    <div class="card-grid">
+        <div class="card">
+            <h4>🔍 Pesquisa Profunda com Citações</h4>
+            <p>Diferente do Claude/ChatGPT, o NotebookLM SEMPRE cita a fonte exata. Você pergunta, ele responde e mostra de qual documento/página tirou aquilo.</p>
+        </div>
+        <div class="card">
+            <h4>📄 Processa 50+ Documentos Simultaneamente</h4>
+            <p>PDFs, Google Docs, sites, YouTube (transcrições). Cria uma base de conhecimento unificada.</p>
+        </div>
+        <div class="card">
+            <h4>🎙️ Gera Podcast Automático</h4>
+            <p>Funcionalidade INSANA: ele transforma seus docs num podcast de 10-20min com 2 apresentadores discutindo o conteúdo. Perfeito pra revisar material.</p>
+        </div>
+        <div class="card">
+            <h4>📝 Cria Guias de Estudo</h4>
+            <p>Sobe PDFs de artigos acadêmicos, ele gera resumos, flashcards, perguntas de revisão.</p>
+        </div>
+        <div class="card">
+            <h4>🔒 Privacidade Total</h4>
+            <p>Google NÃO treina modelos com seus dados. É isolado por Notebook. Deleta, apaga tudo.</p>
+        </div>
+        <div class="card">
+            <h4>💡 Insights Cruzados</h4>
+            <p>Pergunta "Quais os pontos em comum entre esses 10 artigos sobre IA?" — ele conecta padrões que você não viu.</p>
+        </div>
+    </div>
+
+    <h3 class="mt-2">Como Usar (Passo a Passo)</h3>
+
+    <div class="feature-card">
+        <h4>1. Acesse NotebookLM</h4>
+        <p>Vai em: <a href="https://notebooklm.google.com" class="text-green" target="_blank">notebooklm.google.com</a></p>
+        <p>Login com conta Google (grátis).</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>2. Crie um Novo Notebook</h4>
+        <p>Clique em <strong>"New Notebook"</strong>. Dê um nome (ex: "Pesquisa - Marketing Odontológico").</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>3. Adicione Fontes</h4>
+        <p>Clique em <strong>"Add Source"</strong>. Você pode adicionar:</p>
+        <ul>
+            <li>PDFs (até 500 páginas cada)</li>
+            <li>Google Docs</li>
+            <li>URLs de sites/artigos</li>
+            <li>Links do YouTube (ele pega a transcrição)</li>
+            <li>Texto copiado direto</li>
+        </ul>
+        <p><strong>Exemplo:</strong> Sobe 20 PDFs sobre tráfego pago pra dentistas, 10 transcrições de vídeos, 5 artigos de blog.</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>4. Faça Perguntas Profundas</h4>
+        <p><strong>Exemplos de perguntas:</strong></p>
+        <ul>
+            <li>"Quais as 10 estratégias mais mencionadas nesses documentos?"</li>
+            <li>"Resuma os principais pontos de discordância entre os autores"</li>
+            <li>"Cria uma tabela comparando abordagens de cada fonte"</li>
+            <li>"Quais dados/estatísticas são citados? Liste com fonte"</li>
+        </ul>
+        <p>Ele responde com citações diretas. Clica na citação, abre o trecho exato no doc original.</p>
+    </div>
+
+    <div class="feature-card">
+        <h4>5. Gere Artefatos</h4>
+        <p>No canto superior direito, clique em <strong>"Notebook guide"</strong>. Escolha:</p>
+        <ul>
+            <li><strong>Study Guide:</strong> Resumos + perguntas de revisão</li>
+            <li><strong>FAQ:</strong> Perguntas frequentes com respostas</li>
+            <li><strong>Briefing Doc:</strong> Documento executivo</li>
+            <li><strong>Timeline:</strong> Linha do tempo de eventos (se aplicável)</li>
+            <li><strong>Audio Overview (PODCAST!):</strong> Gera áudio de 10-20min discutindo o conteúdo</li>
+        </ul>
+    </div>
+
+    <h3 class="mt-2">NotebookLM vs Claude Projects</h3>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>Critério</th>
+                    <th>NotebookLM</th>
+                    <th>Claude Projects</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Propósito</strong></td>
+                    <td>Pesquisa profunda, análise documental</td>
+                    <td>Produção (criar docs, código, copy)</td>
+                </tr>
+                <tr>
+                    <td><strong>Citações</strong></td>
+                    <td>✅ Automáticas, com link pro trecho</td>
+                    <td>❌ Não cita fonte</td>
+                </tr>
+                <tr>
+                    <td><strong>Limite de Docs</strong></td>
+                    <td>✅ Ilimitado (grátis)</td>
+                    <td>⚠️ 200 arquivos (Pro)</td>
+                </tr>
+                <tr>
+                    <td><strong>Criação de Conteúdo</strong></td>
+                    <td>❌ Só consulta, não cria novo</td>
+                    <td>✅ Cria docs, código, copy</td>
+                </tr>
+                <tr>
+                    <td><strong>Podcast Automático</strong></td>
+                    <td>✅ Sim (incrível)</td>
+                    <td>❌ Não</td>
+                </tr>
+                <tr>
+                    <td><strong>Preço</strong></td>
+                    <td>✅ Grátis</td>
+                    <td>$20/mês (Claude Pro)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3 class="mt-2">Casos de Uso (New Bird)</h3>
+
+    <div class="card-grid">
+        <div class="card">
+            <h4>📊 Análise de Mercado</h4>
+            <p><strong>Input:</strong> 30 artigos sobre marketing odontológico.<br><strong>Prompt:</strong> "Quais as 5 tendências mais citadas nos últimos 12 meses?"<br><strong>Resultado:</strong> Relatório com citações, pronto pra apresentar pro cliente.</p>
+        </div>
+        <div class="card">
+            <h4>🎓 Onboarding de Equipe</h4>
+            <p><strong>Input:</strong> SOPs, manuais, gravações de treinamento.<br><strong>Uso:</strong> Novo membro da equipe faz perguntas pro Notebook, aprende sozinho.<br><strong>Economia:</strong> 80% do tempo de onboarding.</p>
+        </div>
+        <div class="card">
+            <h4>🔍 Due Diligence de Investimento</h4>
+            <p><strong>Input:</strong> Docs financeiros, contratos, apresentações da startup.<br><strong>Prompt:</strong> "Quais os principais riscos mencionados? Liste com fonte."<br><strong>Resultado:</strong> Análise completa em minutos.</p>
+        </div>
+    </div>
+
+    <div class="callout mt-2">
+        <p><strong>Workflow ideal: NotebookLM pra PESQUISA → Claude Projects pra PRODUÇÃO. Um alimenta o outro.</strong></p>
+    </div>
+</section>
             <li><a href="#mcp">MCP</a></li>
             <li><a href="#automacao">Automação</a></li>
             <li><a href="#prompts">Prompts</a></li>
