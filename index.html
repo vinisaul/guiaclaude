@@ -3144,7 +3144,27 @@ console.log('🔗 Links internos:', document.querySelectorAll('a[href^="#"]').le
 console.log('❓ FAQs:', document.querySelectorAll('.faq-item').length);
     </script>
 
+/* Remove qualquer menu duplicado */
+header nav {
+    position: relative; /* ou fixed, dependendo do que você quer */
+    z-index: 1000;
+    top: 0;
+    width: 100%;
+}
+
+/* Se tiver menu mobile sobreposto */
+.menu-mobile {
+    position: fixed;
+    z-index: 9999; /* maior que o outro menu */
+    top: 0;
+    left: -100%; /* escondido por padrão */
+    transition: left 0.3s;
+}
+
+.menu-mobile.active {
+    left: 0;
+}
+    
 </body>
 </html>
-
 
