@@ -8657,7 +8657,649 @@ window.open(`https://codesandbox.io/s/${sandbox_id}`);</pre>
             <p><strong>Repositório útil:</strong> <code>awesome-claude-artifacts-connectors</code> (buscar no GitHub para scripts prontos)</p>
         </div>
     </section>
+<!-- SEÇÃO: Claude vs Claude Code vs Cowork -->
+<section class="container">
+    <h2>Claude vs Claude Code vs Cowork</h2>
+    <p class="subtitle">3 formas de interagir com Claude — qual usar quando?</p>
 
+    <div class="comparison-grid">
+        <!-- Claude Chat -->
+        <div class="comparison-card">
+            <h3>🗨️ Claude (Chat)</h3>
+            <p class="card-subtitle">O chat que você já conhece</p>
+            
+            <div class="card-section">
+                <h4>Melhor para:</h4>
+                <ul>
+                    <li>Brainstorming rápido</li>
+                    <li>Revisar textos</li>
+                    <li>Tirar dúvidas</li>
+                    <li>Prototipagem de ideias</li>
+                </ul>
+            </div>
+
+            <div class="card-section">
+                <h4>Limitações:</h4>
+                <ul>
+                    <li>Sem execução de código local</li>
+                    <li>Sem acesso direto aos seus arquivos</li>
+                    <li>Contexto limitado entre sessões</li>
+                    <li>Copiar/colar manual</li>
+                </ul>
+            </div>
+
+            <div class="card-highlight">
+                <strong>Use quando:</strong> Precisa pensar, não construir
+            </div>
+
+            <div class="card-cta">
+                <a href="https://claude.ai" target="_blank" class="btn-secondary">Acessar Claude.ai →</a>
+                <p class="small-text">Grátis, só criar conta</p>
+            </div>
+        </div>
+
+        <!-- Claude Code -->
+        <div class="comparison-card featured">
+            <h3>💻 Claude Code</h3>
+            <p class="card-subtitle">Claude com superpoderes de desenvolvedor</p>
+            
+            <div class="card-section">
+                <h4>O que faz de diferente:</h4>
+                <ul>
+                    <li>Executa código no seu computador</li>
+                    <li>Lê e edita seus arquivos</li>
+                    <li>Instala dependências</li>
+                    <li>Roda testes</li>
+                    <li>Faz commits no Git</li>
+                    <li>Debugga erros reais</li>
+                </ul>
+            </div>
+
+            <div class="card-section">
+                <h4>Como funciona:</h4>
+                <ol>
+                    <li>Você pede algo ("cria um dashboard React")</li>
+                    <li>Claude Code escreve o código</li>
+                    <li>Executa localmente</li>
+                    <li>Testa</li>
+                    <li>Ajusta se necessário</li>
+                    <li>Repete até funcionar</li>
+                </ol>
+            </div>
+
+            <div class="card-highlight">
+                <strong>É agentic:</strong> Claude toma decisões sozinho e auto-corrige
+            </div>
+
+            <div class="card-section">
+                <h4>Melhor para:</h4>
+                <ul>
+                    <li>Projetos de código complexos</li>
+                    <li>Automações locais</li>
+                    <li>Integração com seu ambiente de dev</li>
+                    <li>Iteração rápida (código → teste → ajuste)</li>
+                </ul>
+            </div>
+
+            <div class="card-cta">
+                <p class="small-text"><strong>Precisa de:</strong> Node.js + API key da Anthropic</p>
+            </div>
+        </div>
+
+        <!-- Cowork -->
+        <div class="comparison-card">
+            <h3>🔗 Cowork</h3>
+            <p class="card-subtitle">Claude + suas ferramentas em tempo real</p>
+            
+            <div class="card-section">
+                <h4>O que é:</h4>
+                <p>Claude conectado com seus apps via API:</p>
+                <ul>
+                    <li>Notion</li>
+                    <li>Google Calendar</li>
+                    <li>Gmail</li>
+                    <li>Slack</li>
+                    <li>GitHub</li>
+                    <li>E 100+ outras ferramentas</li>
+                </ul>
+            </div>
+
+            <div class="card-section">
+                <h4>Exemplo real:</h4>
+                <div class="example-box">
+                    <p><strong>Você:</strong> "Agenda reunião com João amanhã às 14h"</p>
+                    <p><strong>Claude Cowork:</strong></p>
+                    <ol>
+                        <li>Busca horários livres no Google Calendar</li>
+                        <li>Cria o evento</li>
+                        <li>Envia convite por email (Gmail)</li>
+                        <li>Adiciona tarefa de prep no Notion</li>
+                        <li>Te notifica no Slack</li>
+                    </ol>
+                    <p class="small-text">Tudo em 5 segundos, sem abrir nenhum app</p>
+                </div>
+            </div>
+
+            <div class="card-section">
+                <h4>Melhor para:</h4>
+                <ul>
+                    <li>Automação de workflows</li>
+                    <li>Assistente pessoal 24/7</li>
+                    <li>Integração entre sistemas</li>
+                    <li>Executar ações reais (não só gerar código)</li>
+                </ul>
+            </div>
+
+            <div class="card-cta">
+                <p class="small-text"><strong>Como começar:</strong> Usar Composio / Make / n8n</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de Quando Usar -->
+    <div class="when-to-use">
+        <h3>Quando usar cada um:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Situação</th>
+                    <th>Use</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>"Como estruturo esse email?"</td>
+                    <td><strong>Claude</strong></td>
+                </tr>
+                <tr>
+                    <td>"Cria um script Python que processa esses CSVs"</td>
+                    <td><strong>Claude Code</strong></td>
+                </tr>
+                <tr>
+                    <td>"Me avisa quando João responder meu email"</td>
+                    <td><strong>Cowork</strong></td>
+                </tr>
+                <tr>
+                    <td>"Explica esse conceito"</td>
+                    <td><strong>Claude</strong></td>
+                </tr>
+                <tr>
+                    <td>"Desenvolve esse app do zero"</td>
+                    <td><strong>Claude Code</strong></td>
+                </tr>
+                <tr>
+                    <td>"Gerencia minha agenda essa semana"</td>
+                    <td><strong>Cowork</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Stack Ideal -->
+    <div class="ideal-stack">
+        <h3>💡 O Stack Ideal para Máxima Produtividade</h3>
+        <p>Use os 3 juntos:</p>
+        
+        <div class="stack-flow">
+            <div class="stack-item">
+                <span class="stack-number">1</span>
+                <h4>Claude Chat</h4>
+                <p>Pensar e planejar</p>
+            </div>
+            <div class="stack-arrow">→</div>
+            <div class="stack-item">
+                <span class="stack-number">2</span>
+                <h4>Claude Code</h4>
+                <p>Construir e testar</p>
+            </div>
+            <div class="stack-arrow">→</div>
+            <div class="stack-item">
+                <span class="stack-number">3</span>
+                <h4>Cowork</h4>
+                <p>Automatizar e executar</p>
+            </div>
+        </div>
+
+        <div class="example-box">
+            <h4>Exemplo de workflow completo:</h4>
+            <ul>
+                <li>Planeja a arquitetura no <strong>Chat</strong></li>
+                <li>Desenvolve e testa no <strong>Code</strong></li>
+                <li>Deploya e automatiza com <strong>Cowork</strong></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- SEÇÃO: 9 Claude Skills para Desenvolvedores -->
+<section class="container">
+    <h2>9 Claude Skills para Desenvolvedores</h2>
+    <p class="subtitle">Habilidades prontas para 10x sua produtividade</p>
+
+    <!-- O que são Claude Skills -->
+    <div class="intro-box">
+        <h3>O que são Claude Skills?</h3>
+        <p>Claude Skills são <strong>instruções prontas</strong> que você pode adicionar ao Claude para fazê-lo se comportar de forma específica e especializada para uma tarefa.</p>
+        
+        <p>Em vez de escrever prompts longos toda vez que quiser que Claude revise seu código ou ajude a planejar uma feature, você <strong>instala uma skill uma vez</strong>, e ela passa a saber exatamente o que fazer.</p>
+        
+        <div class="how-it-works">
+            <h4>Como funcionam:</h4>
+            <p>Uma skill é um conjunto de instruções armazenadas em plataformas como <strong>Smithery.ai</strong> ou <strong>GitHub</strong>. Você adiciona ao Claude uma vez, e ela se torna parte de como Claude pensa durante sua sessão.</p>
+            <p>Cada skill é projetada para um tipo específico de tarefa — debugging, segurança, planejamento, etc.</p>
+        </div>
+    </div>
+
+    <!-- Como encontrar e adicionar skills -->
+    <div class="find-skills-box">
+        <h3>Como encontrar e adicionar skills:</h3>
+        <ul>
+            <li>Vá em <a href="https://smithery.ai" target="_blank"><strong>Smithery.ai</strong></a> e busque por categoria ou palavra-chave</li>
+            <li>Navegue em <a href="https://github.com/BehiSecc/awesome-claude-skills" target="_blank"><strong>BehiSecc/awesome-claude-skills</strong></a> no GitHub para uma lista curada</li>
+            <li>Use o <a href="https://jeffallan.github.io/claude-skills/skills-guide" target="_blank"><strong>jeffallan.github.io/claude-skills/skills-guide</strong></a> para um diretório estruturado</li>
+        </ul>
+        <p class="small-text">A maioria das skills inclui instalação com um clique ou um setup rápido.</p>
+    </div>
+
+    <!-- Skills Grid -->
+    <div class="skills-grid">
+        
+        <!-- Skill 1: Debug -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">1</span>
+                <h3>Debug Skill</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ debugging</div>
+            
+            <div class="skill-link">
+                <a href="https://github.com/AlmogBaku/debug-skill" target="_blank">
+                    github.com/AlmogBaku/debug-skill
+                </a>
+            </div>
+
+            <p>Quando você está travado em um bug e não consegue descobrir por que algo está quebrando, essa skill ajuda Claude a trabalhar com você adequadamente.</p>
+
+            <p>Ela te dá <strong>breakpoints reais</strong> e permite que você percorra seu código linha por linha e inspecione o que as variáveis realmente contêm em cada ponto — em vez de apenas adivinhar.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Use sempre que tiver um bug que não consegue identificar facilmente. Funciona especialmente bem quando você não tem certeza de qual parte do código é o problema, ou quando a mensagem de erro não é muito útil.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <code>"debug this"</code>
+                <code>"set a breakpoint here"</code>
+                <code>"step through this function"</code>
+            </div>
+        </div>
+
+        <!-- Skill 2: Secure Code Guardian -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">2</span>
+                <h3>Secure Code Guardian</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ security</div>
+            
+            <div class="skill-link">
+                <a href="https://jeffallan.github.io/claude-skills/skills/security/secure-code-guardian/" target="_blank">
+                    claude-skills/security/secure-code-guardian
+                </a>
+            </div>
+
+            <p>Bugs de segurança são difíceis de detectar enquanto você está escrevendo código, e muito fáceis de se arrepender depois.</p>
+
+            <p>Essa skill faz Claude escrever <strong>código seguro por padrão</strong> quando você trabalha com logins, senhas, tokens ou qualquer entrada de usuário. Segue as melhores práticas da <strong>OWASP</strong> e conhece padrões comuns de vulnerabilidade.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Use sempre que estiver construindo autenticação, lidando com dados de usuários, escrevendo endpoints de API, ou trabalhando com qualquer coisa que toque senhas ou sessões.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <code>"secure this"</code>
+                <code>"add authentication"</code>
+                <code>"review for OWASP"</code>
+                <code>"check for JWT vulnerabilities"</code>
+            </div>
+        </div>
+
+        <!-- Skill 3: Feature Forge -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">3</span>
+                <h3>Feature Forge</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ planning</div>
+            
+            <div class="skill-link">
+                <a href="https://jeffallan.github.io/claude-skills/skills/workflow/feature-forge/" target="_blank">
+                    claude-skills/workflow/feature-forge
+                </a>
+            </div>
+
+            <p>Um dos erros mais comuns no desenvolvimento é pular para o código antes de entender completamente o que você está construindo.</p>
+
+            <p>Feature Forge ajuda você a <strong>pensar através de uma feature adequadamente primeiro</strong>. Ela faz as perguntas certas — tanto da perspectiva de produto quanto de engenharia — e te devolve uma spec limpa com requisitos e critérios de aceitação.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Use antes de escrever uma única linha de código em qualquer nova feature. Mesmo para coisas pequenas, ter uma spec curta ajuda você a evitar retrabalho.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <code>"define this feature"</code>
+                <code>"write a spec for..."</code>
+                <code>"what are the requirements for..."</code>
+            </div>
+        </div>
+
+        <!-- Skill 4: Code Reviewer -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">4</span>
+                <h3>Code Reviewer</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ quality</div>
+            
+            <div class="skill-link">
+                <a href="https://jeffallan.github.io/claude-skills/skills/quality/code-reviewer/" target="_blank">
+                    claude-skills/quality/code-reviewer
+                </a>
+            </div>
+
+            <p>Antes de abrir um pull request, essa skill dá uma revisão completa no seu código.</p>
+
+            <p>Ela te diz o que está quebrado, o que é arriscado, o que está bagunçado, e o que você realmente acertou. Funciona como ter um engenheiro sênior olhando por cima do seu ombro — sem precisar incomodar ninguém.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Use toda vez antes de abrir um PR. Mesmo se você estiver confiante no seu código, uma revisão estruturada frequentemente pega algo que você perdeu.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <code>"review this code"</code>
+                <code>"check this PR"</code>
+                <code>"how is the code quality here?"</code>
+            </div>
+        </div>
+
+        <!-- Skill 5: Playwright Skill -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">5</span>
+                <h3>Playwright Skill</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ testing</div>
+            
+            <div class="skill-link">
+                <a href="https://github.com/testdino-hq/playwright-skill" target="_blank">
+                    github.com/testdino-hq/playwright-skill
+                </a>
+            </div>
+
+            <p>Essa skill te guia através de <strong>desenvolvimento orientado a testes (TDD)</strong> usando Playwright.</p>
+
+            <p>A ideia é simples: escreva um teste que falha primeiro, assista ele falhar, então escreva apenas o código suficiente para fazê-lo passar. Mantém você focado e garante que seu código realmente funciona antes de seguir em frente.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Use antes de começar a implementar qualquer feature ou correção de bug. Se você é novo em TDD, essa skill torna o processo muito menos intimidador.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <p class="small-text">Apenas comece a descrever o que você quer implementar ou corrigir — a skill entra em ação automaticamente.</p>
+            </div>
+        </div>
+
+        <!-- Skill 6: RAG Architect -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">6</span>
+                <h3>RAG Architect</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ AI / infra</div>
+            
+            <div class="skill-link">
+                <a href="https://jeffallan.github.io/claude-skills/skills/data-ml/rag-architect/" target="_blank">
+                    claude-skills/data-ml/rag-architect
+                </a>
+            </div>
+
+            <p><strong>RAG</strong> significa Retrieval-Augmented Generation.</p>
+
+            <p>Se você está construindo algo que permite uma IA responder perguntas dos seus próprios documentos, base de conhecimento ou database, você precisa de um pipeline RAG.</p>
+
+            <p>Essa skill projeta tudo para você — como quebrar seus dados, criar embeddings, buscar através deles, e retornar os melhores resultados.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Use se você está construindo um chatbot que responde perguntas dos seus docs, uma ferramenta de busca para dados internos, ou qualquer coisa envolvendo IA + sua própria base de conhecimento.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <code>"design a RAG system"</code>
+                <code>"I need vector search"</code>
+                <code>"help me set up embeddings"</code>
+            </div>
+        </div>
+
+        <!-- Skill 7: The Fool -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">7</span>
+                <h3>The Fool</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ critical thinking</div>
+            
+            <div class="skill-link">
+                <a href="https://jeffallan.github.io/claude-skills/skills/workflow/the-fool/" target="_blank">
+                    claude-skills/workflow/the-fool
+                </a>
+            </div>
+
+            <p>Nomeada após a carta de tarô que faz perguntas ingênuas mas importantes. Antes de se comprometer com uma grande decisão, essa skill <strong>testa seu pensamento</strong> de cinco ângulos diferentes: advogado do diabo, red team, pré-mortem, e mais.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Use antes de se comprometer com qualquer grande decisão, item de roadmap ou escolha de arquitetura.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <code>"challenge this"</code>
+                <code>"poke holes in my plan"</code>
+                <code>"stress test"</code>
+            </div>
+        </div>
+
+        <!-- Skill 8: Spec Miner -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">8</span>
+                <h3>Spec Miner</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ legacy</div>
+            
+            <div class="skill-link">
+                <a href="https://jeffallan.github.io/claude-skills/skills/workflow/spec-miner/" target="_blank">
+                    claude-skills/workflow/spec-miner
+                </a>
+            </div>
+
+            <p>Todo mundo herda uma codebase sem documentação em algum momento. Spec Miner aponta para o seu código, lê tudo, traça os fluxos de dados, e <strong>produz a spec que deveria ter existido desde o dia um</strong>.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Sempre que você herdar código legado sem documentação.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <p class="small-text">Aponte para uma pasta/repo e peça para "documentar isso" ou "gerar spec desse código"</p>
+            </div>
+        </div>
+
+        <!-- Skill 9: Git Worktrees -->
+        <div class="skill-card">
+            <div class="skill-header">
+                <span class="skill-number">9</span>
+                <h3>Git Worktrees</h3>
+            </div>
+            
+            <div class="skill-tag">🏷️ workflow</div>
+            
+            <div class="skill-link">
+                <a href="https://github.com/obra/superpowers/tree/main/skills/using-git-worktrees" target="_blank">
+                    github.com/obra/superpowers/.../git-worktrees
+                </a>
+            </div>
+
+            <p>Git worktrees permitem que você trabalhe em <strong>múltiplas branches ao mesmo tempo</strong> em pastas separadas, sem trocar de branch e perder seu contexto atual.</p>
+
+            <div class="skill-section">
+                <h4>Quando usar:</h4>
+                <p>Quando você precisa trabalhar em várias features simultaneamente, ou revisar um PR enquanto mantém seu trabalho atual intacto.</p>
+            </div>
+
+            <div class="skill-activation">
+                <h4>Como ativar:</h4>
+                <code>"create worktree"</code>
+                <code>"setup parallel branches"</code>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Nota sobre começar -->
+    <div class="getting-started-note">
+        <h3>💡 Nota sobre começar:</h3>
+        <p>Você <strong>não precisa instalar todas de uma vez</strong>. Escolha uma que corresponda a algo em que você está trabalhando atualmente e experimente. As skills de debugging e code reviewer são bons pontos de partida para a maioria dos desenvolvedores.</p>
+        <p><strong>Skills funcionam melhor quando você dá contexto.</strong> Quanto mais específico você for sobre o que está trabalhando, melhor será o resultado.</p>
+    </div>
+
+    <!-- Onde encontrar mais skills -->
+    <div class="find-more-skills">
+        <h3>Onde encontrar mais skills</h3>
+        <p>Esses três lugares são os melhores pontos de partida para descobrir novas Claude Skills:</p>
+        
+        <div class="marketplace-grid">
+            <div class="marketplace-card">
+                <span class="marketplace-number">1</span>
+                <h4>Smithery.ai</h4>
+                <a href="https://smithery.ai" target="_blank">smithery.ai</a>
+                <p>Um marketplace pesquisável com milhares de skills. Filtre por categoria, popularidade ou caso de uso.</p>
+            </div>
+
+            <div class="marketplace-card">
+                <span class="marketplace-number">2</span>
+                <h4>BehiSecc / awesome-claude-skills</h4>
+                <a href="https://github.com/BehiSecc/awesome-claude-skills" target="_blank">github.com/BehiSecc/awesome-claude-skills</a>
+                <p>Uma lista curada do GitHub mantida pela comunidade. Ótima se você prefere uma lista simples e selecionada manualmente.</p>
+            </div>
+
+            <div class="marketplace-card">
+                <span class="marketplace-number">3</span>
+                <h4>jeffallan Skills Guide</h4>
+                <a href="https://jeffallan.github.io/claude-skills/skills-guide/" target="_blank">jeffallan.github.io/claude-skills/skills-guide/</a>
+                <p>Um guia de skills estruturado com categorias e descrições. Útil se você está procurando algo específico.</p>
+            </div>
+        </div>
+
+        <p class="download-note">→ Você pode baixar quantas skills quiser nesses marketplaces!</p>
+    </div>
+</section>
+
+<!-- SEÇÃO: Skills Avançadas de Arquitetura -->
+<section class="container">
+    <h2>Skills Avançadas de Arquitetura</h2>
+    <p class="subtitle">Para design de sistemas e APIs</p>
+
+    <div class="architecture-grid">
+        
+        <!-- Architecture Designer -->
+        <div class="skill-card-large">
+            <div class="skill-header">
+                <h3>Architecture Designer</h3>
+            </div>
+            
+            <div class="skill-link">
+                <a href="https://github.com/api-architecture/architecture-designer/" target="_blank">
+                    api-architecture/architecture-designer/
+                </a>
+            </div>
+
+            <p>Se você está desenhando algo novo ou escolhendo entre abordagens, isso pensa como um arquiteto principal. <strong>Trade-offs documentados, decisões registradas, diagramas incluídos.</strong></p>
+
+            <div class="skill-activation">
+                <h4>Para Ativar:</h4>
+                <code>"design this system"</code>
+                <code>"architecture"</code>
+                <code>"help me choose between..."</code>
+            </div>
+        </div>
+
+        <!-- API Designer -->
+        <div class="skill-card-large">
+            <div class="skill-header">
+                <h3>API Designer</h3>
+            </div>
+            
+            <div class="skill-link">
+                <a href="https://github.com/skills/api-architecture/api-designer/" target="_blank">
+                    /skills/api-architecture/api-designer/
+                </a>
+            </div>
+
+            <p>Use quando precisar desenhar APIs limpas e estruturadas. Ajuda você a criar <strong>endpoints claros, modelos de dados, e documentação</strong> para que seu produto escale suavemente e evite integrações bagunçadas.</p>
+
+            <div class="skill-activation">
+                <h4>Para Ativar:</h4>
+                <code>"design this API"</code>
+                <code>"REST API"</code>
+                <code>"OpenAPI spec"</code>
+            </div>
+        </div>
+
+        <!-- Microservice Architect -->
+        <div class="skill-card-large">
+            <div class="skill-header">
+                <h3>Microservice Architect</h3>
+            </div>
+            
+            <div class="skill-link">
+                <a href="https://github.com/api-architecture/microservices-architect/" target="_blank">
+                    api-architecture/microservices-architect/
+                </a>
+            </div>
+
+            <p>Use quando quiser quebrar um sistema complexo em serviços menores e independentes que <strong>escalam & deployam facilmente</strong>. Ajuda você a desenhar sistemas confiáveis e flexíveis para que seu produto não quebre ou desacelere conforme cresce.</p>
+
+            <div class="skill-activation">
+                <h4>Para Ativar:</h4>
+                <code>"microservices"</code>
+                <code>"service boundaries"</code>
+                <code>"distributed systems"</code>
+            </div>
+        </div>
+
+    </div>
+</section>
     <!-- JavaScript Section -->
     <script>
         // (o script JS que já estava antes continua aqui, sem mudanças)
